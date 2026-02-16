@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summas - Plantillas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styleplantillas.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="../LogoSummas.png" alt="Summas Consultoría">
+        </div>
+        
+        <nav>
+            <a href="../dash/dashboard.html">Dashboard</a>
+            <a href="../au/auditorias.html">Auditorías</a>
+            <a href="../plan/plantillas.html" class="active">Plantillas</a>
+            <a href="#empresas">Empresas</a>
+        </nav>
+        
+        <div class="user-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+        </div>
+    </header>
+
+    <div class="content">
+        <!-- Filters Section -->
+        <div class="filters-section">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label>Empresa</label>
+                    <select id="empresa" class="filter-select">
+                        <option>Selecciona la empresa</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Marca</label>
+                    <select id="marca" class="filter-select">
+                        <option>Selecciona la marca</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Estado</label>
+                    <select id="estado" class="filter-select">
+                        <option>Selecciona el concesionario</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="filter-row">
+                <div class="filter-group small">
+                    <label>Desde</label>
+                    <input type="text" id="desde" class="date-field" placeholder="dd/mm/aa">
+                </div>
+                <div class="filter-group small">
+                    <label>Hasta</label>
+                    <input type="text" id="hasta" class="date-field" placeholder="dd/mm/aa">
+                </div>
+                <div class="button-group">
+                    <button class="btn-refresh refresh-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                        </svg>
+                    </button>
+                    <button class="btn-export export-btn">Exportar</button>
+                    <button class="btn-add add-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        <span class="btn-add-text">Agregar Plantilla</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plantillas List -->
+        <div class="plantillas-list" id="plantillasList">
+            <!-- Las plantillas se cargarán dinámicamente -->
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="pagination-btn" id="prevPage">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <span class="pagination-info">Página <span id="currentPage">1</span></span>
+            <button class="pagination-btn" id="nextPage">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal Nueva Plantilla -->
+    <div id="nuevaPlantillaModal" class="modal">
+        <div class="modal-content modal-plantilla">
+            <div class="modal-header">
+                <h2>Nueva Plantilla</h2>
+                <span class="close-modal" id="closeNuevaPlantilla">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="formNuevaPlantilla">
+                    <div class="form-group">
+                        <label>Marca</label>
+                        <select class="form-control" id="marcaNueva" required>
+                            <option value="">Selecciona la marca</option>
+                            <option value="Lexus">Lexus</option>
+                            <option value="Toyota">Toyota</option>
+                            <option value="Honda">Honda</option>
+                            <option value="Nissan">Nissan</option>
+                            <option value="Mazda">Mazda</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Concesionario</label>
+                        <select class="form-control" id="concesionarioNuevo" required>
+                            <option value="">Selecciona el concesionario</option>
+                            <option value="Grupo Pana: Surco">Grupo Pana: Surco</option>
+                            <option value="Concesionario 1">Concesionario 1</option>
+                            <option value="Concesionario 2">Concesionario 2</option>
+                            <option value="Concesionario 3">Concesionario 3</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Capítulo</label>
+                            <select class="form-control" id="capituloNuevo" required>
+                                <option value="">Selecciona</option>
+                                <option value="Nuevo">Nuevo</option>
+                                <option value="Existente">Existente</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <input type="text" class="form-control" id="nombreCapitulo" placeholder="Nombre Nuevo" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Subcapítulo</label>
+                        <input type="text" class="form-control" id="subcapituloNuevo" placeholder="Nombre Nuevo" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Método</label>
+                        <select class="form-control" id="metodoNuevo" required>
+                            <option value="">Selecciona el método</option>
+                            <option value="Auditor Evidencia">Auditor Evidencia</option>
+                            <option value="Mystery Shopper">Mystery Shopper</option>
+                            <option value="Evaluación Directa">Evaluación Directa</option>
+                        </select>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button type="button" class="btn-secondary" id="btnCancelarPlantilla">Cancelar</button>
+                        <button type="submit" class="btn-crear">Crear</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Perfil -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Perfil de Usuario</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="profile-avatar">
+                    <div class="avatar-circle">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#1D3579">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                    </div>
+                    <button class="btn-change-photo">Cambiar foto</button>
+                </div>
+                
+                <div class="profile-info">
+                    <div class="info-row">
+                        <div class="info-group">
+                            <label>Nombre completo</label>
+                            <input type="text" id="fullName" value="Juan Pérez" readonly>
+                        </div>
+                        <div class="info-group">
+                            <label>Email</label>
+                            <input type="email" id="email" value="juan.perez@summas.com" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="info-group">
+                            <label>Cargo</label>
+                            <input type="text" id="position" value="Auditor Senior" readonly>
+                        </div>
+                        <div class="info-group">
+                            <label>Departamento</label>
+                            <input type="text" id="department" value="Control de Calidad" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="info-group">
+                            <label>Teléfono</label>
+                            <input type="tel" id="phone" value="+51 999 888 777" readonly>
+                        </div>
+                        <div class="info-group">
+                            <label>Fecha de ingreso</label>
+                            <input type="text" id="joinDate" value="15/03/2023" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="info-row single">
+                        <div class="info-group full-width">
+                            <label>Permisos</label>
+                            <div class="permissions-tags">
+                                <span class="tag">Administrador</span>
+                                <span class="tag">Auditorías</span>
+                                <span class="tag">Reportes</span>
+                                <span class="tag">Gestión de Usuarios</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn-secondary" id="btnEditProfile">Editar Perfil</button>
+                    <button class="btn-primary" id="btnChangePassword">Cambiar Contraseña</button>
+                    <button class="btn-danger" id="btnLogout">Cerrar Sesión</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scriptplantillas.js"></script>
+</body>
+</html>

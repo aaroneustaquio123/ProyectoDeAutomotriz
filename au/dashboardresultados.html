@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summas - Dashboard de Resultados</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style-dashboard.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="../LogoSummas.png" alt="Summas Consultoría" style="height: 40px;">
+        </div>
+        <nav>
+            <a href="../dash/dashboard.html">Dashboard</a>
+            <a href="auditorias.html">Auditorías</a>
+            <a href="../plan/plantillas.html">Plantillas</a>
+            <a href="#empresas">Empresas</a>
+        </nav>
+        <div class="user-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <!-- Encabezado del Dashboard -->
+        <div class="dashboard-header">
+            <div class="header-left">
+                <div class="company-logo">
+                    <img src="https://via.placeholder.com/60x60/1D3579/FFFFFF?text=T" alt="Toyota">
+                </div>
+                <div class="header-info">
+                    <h1>Resultados de la auditoría</h1>
+                    <div class="audit-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Concesionario auditado</span>
+                            <span class="meta-value">Mitsui</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Local auditado</span>
+                            <span class="meta-value">La molina</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Auditor</span>
+                            <span class="meta-value">Juan Rivas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <span class="audit-date">30/01/2026</span>
+            </div>
+        </div>
+
+        <!-- Cumplimiento Total -->
+        <div class="section-card cumplimiento-card">
+            <div class="card-header">
+                <h2>Cumplimiento total</h2>
+                <button class="btn-export" onclick="exportarDashboard()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Exportar PDF
+                </button>
+            </div>
+            <div class="cumplimiento-content">
+                <div class="cumplimiento-chart">
+                    <canvas id="chartCumplimiento" width="250" height="250"></canvas>
+                    <div class="chart-center-text">
+                        <span class="percentage" id="totalPercentage">85.4%</span>
+                    </div>
+                </div>
+                <div class="cumplimiento-legend">
+                    <div class="legend-item">
+                        <span class="legend-color green"></span>
+                        <span class="legend-text" id="legendAprobadas">29 respuestas aprobadas</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color red"></span>
+                        <span class="legend-text" id="legendDesaprobadas">5 respuestas desaprobadas</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cumplimiento por Criterio -->
+        <div class="section-card criterios-card">
+            <h2>Cumplimiento por criterio</h2>
+            <div class="criterios-list" id="criteriosList">
+                <!-- Se llena dinámicamente -->
+            </div>
+        </div>
+
+        <!-- Historial de Preguntas y Respuestas -->
+        <div class="section-card historial-card">
+            <h2>Historial de preguntas y respuestas</h2>
+            <div class="historial-sections" id="historialSections">
+                <!-- Se llena dinámicamente -->
+            </div>
+        </div>
+
+        <!-- Planes de Acción -->
+        <div class="section-card planes-card">
+            <h2>Planes de acción</h2>
+            <div class="planes-list" id="planesList">
+                <!-- Se llena dinámicamente -->
+            </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="dashboard-actions">
+            <button class="btn-secondary" onclick="window.location.href='auditorias.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                Volver a Auditorías
+            </button>
+            <button class="btn-primary" onclick="window.location.href='detalleauditoria.html'">
+                Editar Auditoría
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de Detalle de Pregunta -->
+    <div id="modalDetalle" class="modal-overlay">
+        <div class="modal-detalle">
+            <div class="modal-detalle-header">
+                <h3 id="modalTitulo">Detalle de la Pregunta</h3>
+                <span class="modal-close" onclick="cerrarModalDetalle()">&times;</span>
+            </div>
+            <div class="modal-detalle-body" id="modalBody">
+                <!-- Se llena dinámicamente -->
+            </div>
+            <div class="modal-detalle-footer">
+                <button class="btn-modal-close" onclick="cerrarModalDetalle()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script-dashboard.js"></script>
+</body>
+</html>
