@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summas - Empresas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="empresas.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="logo-container">
+        <img src="../LogoSummas.png" alt="Summas Consultoría">
+    </div>
+
+    <nav>
+        <a href="../dash/dashboard.html">Dashboard</a>
+        <a href="../aud/auditorias.html">Auditorías</a>
+        <a href="../plan/plantillas.html">Plantillas</a>
+        <a href="../em/empresa.html" class="active">Empresas</a>
+    </nav>
+
+    <div class="user-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+        </svg>
+    </div>
+</header>
+
+<!-- CONTENIDO PRINCIPAL -->
+<div class="content">
+
+    <div class="top-bar">
+        <div class="page-title">
+            Empresas
+            <span>Gestiona las empresas auditadas</span>
+        </div>
+    </div>
+
+    <div class="search-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+             fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" class="search-input" id="searchInput" placeholder="Buscar empresa…">
+    </div>
+
+    <div class="empresas-grid" id="empresasGrid"></div>
+</div>
+
+<!-- MODAL Nueva Empresa -->
+<div id="modalNueva" class="modal">
+    <div class="modal-content modal-nueva">
+        <div class="modal-nueva-bar"></div>
+        <div class="modal-header">
+            <h2>Nueva Empresa</h2>
+            <span class="close-modal" id="closeNueva">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form id="formNueva">
+                <div class="form-group">
+                    <label for="inputNombre">Empresa</label>
+                    <input type="text" id="inputNombre" class="form-input" placeholder="Nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="inputSector">Sector</label>
+                    <select id="inputSector" class="form-input form-select" required>
+                        <option value="" disabled selected></option>
+                        <option value="Automotriz">Automotriz</option>
+                        <option value="Retail">Retail</option>
+                        <option value="Banca y Finanzas">Banca y Finanzas</option>
+                        <option value="Salud">Salud</option>
+                        <option value="Educación">Educación</option>
+                        <option value="Tecnología">Tecnología</option>
+                        <option value="Manufactura">Manufactura</option>
+                        <option value="Construcción">Construcción</option>
+                        <option value="Logística">Logística</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-siguiente">Siguiente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL Estructura Empresa (paso 2) -->
+<div id="modalEstructura" class="modal">
+    <div class="modal-content modal-nueva">
+        <div class="modal-header">
+            <h2>Nueva Empresa</h2>
+            <span class="close-modal" id="closeEstructura">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p class="estructura-pregunta">¿La empresa solo tiene locales?</p>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="estructura" value="solo_locales">
+                    <span class="radio-custom"></span>
+                    Sí, solo tiene locales
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="estructura" value="marcas">
+                    <span class="radio-custom"></span>
+                    No, también tiene marcas
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="estructura" value="operadores">
+                    <span class="radio-custom"></span>
+                    No, también tiene operadores
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="estructura" value="marcas_operadores">
+                    <span class="radio-custom"></span>
+                    No, también tiene marcas y operadores
+                </label>
+            </div>
+            <div class="form-actions">
+                <button class="btn-crear" id="btnCrearEmpresa">Crear</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL Agregar Marca (paso 3) -->
+<div id="modalMarca" class="modal">
+    <div class="modal-content modal-nueva">
+        <div class="modal-header">
+            <h2>Agregar Marca</h2>
+            <span class="close-modal" id="closeMarca">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="inputMarca">Nombre</label>
+                <input type="text" id="inputMarca" class="form-input" placeholder="">
+            </div>
+            <div class="form-actions">
+                <button class="btn-crear" id="btnAgregarMarca">Agregar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL Agregar Operador (paso 4) -->
+<div id="modalOperador" class="modal">
+    <div class="modal-content modal-nueva">
+        <div class="modal-header">
+            <h2>Agregar Operador</h2>
+            <span class="close-modal" id="closeOperador">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="inputOperador">Nombre</label>
+                <input type="text" id="inputOperador" class="form-input" placeholder="">
+            </div>
+            <div class="form-actions">
+                <button class="btn-crear" id="btnAgregarOperador">Agregar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL Nueva Sede (paso 5) -->
+<div id="modalSede" class="modal">
+    <div class="modal-content modal-sede">
+        <div class="modal-header">
+            <h2>Nueva Sede</h2>
+            <span class="close-modal" id="closeSede">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="sede-row">
+                <div class="form-group">
+                    <label for="inputConcesionario">Concesionario</label>
+                    <select id="inputConcesionario" class="form-input form-select">
+                        <option value="">Selecciona</option>
+                        <option value="Grupo Pana">Grupo Pana</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="inputSede">Sede</label>
+                    <input type="text" id="inputSede" class="form-input" placeholder="Ej. La Molina">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputDireccion">Dirección</label>
+                <input type="text" id="inputDireccion" class="form-input" placeholder="Ej. Av. La Molina">
+            </div>
+            <div class="form-group">
+                <label>Área</label>
+                <div class="area-container" id="areaContainer">
+                    <span class="area-tag selected" data-area="Ventas">Ventas</span>
+                    <span class="area-tag" data-area="Servicios">Servicios</span>
+                    <span class="area-tag" data-area="Seminuevo">Seminuevo</span>
+                    <span class="area-tag" data-area="Repuestos">Repuestos</span>
+                    <span class="area-tag" data-area="P&P">P&P</span>
+                    <span class="area-tag add-area-tag" id="btnAddArea">+ Agregar</span>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn-crear" id="btnCrearSede">Crear</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL Detalle Empresa -->
+<div id="modalDetalle" class="modal">
+    <div class="modal-content modal-detalle">
+        <div class="detalle-bar"></div>
+        <div class="modal-header">
+            <h2>Detalle</h2>
+            <span class="close-modal" id="closeDetalle">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="detalle-avatar-row">
+                <div class="detalle-avatar-lg" id="dAvatar">—</div>
+                <div>
+                    <div class="detalle-nombre" id="dNombre">—</div>
+                    <div class="detalle-sector" id="dSector">—</div>
+                </div>
+            </div>
+            <div class="detalle-row">
+                <span class="detalle-label">Locales</span>
+                <span class="detalle-value" id="dLocales">—</span>
+            </div>
+            <div class="detalle-row">
+                <span class="detalle-label">Auditorías realizadas</span>
+                <span class="detalle-value" id="dAuditorias">—</span>
+            </div>
+            <div class="detalle-row">
+                <span class="detalle-label">Contacto</span>
+                <span class="detalle-value" id="dContacto">—</span>
+            </div>
+            <div class="detalle-row">
+                <span class="detalle-label">Estado</span>
+                <span class="detalle-value" id="dEstado">—</span>
+            </div>
+            <div class="detalle-actions">
+                <button class="btn-sec" id="btnEliminar">Eliminar</button>
+                <button class="btn-prim">Ver Auditorías</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="empresas.js"></script>
+</body>
+</html>

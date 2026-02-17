@@ -33,16 +33,21 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Cargar datos de la auditoría y preguntas
     await loadAuditoriaData();
     
-    // Inicializar respuestas
+    // *** FIX: Solo inicializar preguntas que NO tengan respuesta cargada ***
     evaluacionData.sections.forEach(s => {
         s.questions.forEach(q => {
-            answers[q.id] = null;
-            questionData[q.id] = { 
-                comoValido: '', 
-                comentario: '', 
-                evidencias: [], 
-                planAccion: {} 
-            };
+            // Solo inicializar si NO se cargó ya una respuesta desde la API
+            if (!(q.id in answers) || answers[q.id] === undefined) {
+                answers[q.id] = null;
+            }
+            if (!(q.id in questionData) || questionData[q.id] === undefined) {
+                questionData[q.id] = { 
+                    comoValido: '', 
+                    comentario: '', 
+                    evidencias: [], 
+                    planAccion: {} 
+                };
+            }
         });
     });
     
@@ -86,12 +91,23 @@ async function loadAuditoriaData() {
                 text: p.pregunta
             });
             
-            // Si ya tiene respuesta, cargarla
+            // *** FIX: Siempre inicializar questionData para cada pregunta ***
+            // *** y cargar respuesta si existe ***
             if (p.respuesta_id) {
+                // Pregunta YA respondida: cargar respuesta
                 answers[p.pregunta_id] = p.respuesta ? 'si' : 'no';
                 questionData[p.pregunta_id] = {
                     comoValido: p.como_valido || '',
                     comentario: p.comentario || '',
+                    evidencias: [],
+                    planAccion: {}
+                };
+            } else {
+                // Pregunta sin responder: inicializar vacía
+                answers[p.pregunta_id] = null;
+                questionData[p.pregunta_id] = {
+                    comoValido: '',
+                    comentario: '',
                     evidencias: [],
                     planAccion: {}
                 };
