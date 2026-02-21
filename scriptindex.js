@@ -1,52 +1,46 @@
-// Toggle password visibility
-const togglePassword = document.getElementById('togglePassword');
-const passwordInput = document.getElementById('password');
-const eyeIcon = document.getElementById('eyeIcon');
-const eyeOffIcon = document.getElementById('eyeOffIcon');
+document.addEventListener('DOMContentLoaded', () => {
+    // Referencias a los elementos
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('togglePassword');
+    const eyeIcon = document.getElementById('eyeIcon');
+    const eyeOffIcon = document.getElementById('eyeOffIcon');
 
-togglePassword.addEventListener('click', function() {
-    // Toggle password visibility
-    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-    passwordInput.setAttribute('type', type);
-    
-    // Toggle icon
-    eyeIcon.classList.toggle('hidden');
-    eyeOffIcon.classList.toggle('hidden');
-});
+    // 1. Lógica para ver/ocultar contraseña
+    if (togglePassword) {
+        togglePassword.addEventListener('click', () => {
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+            
+            // Intercambiar iconos
+            eyeIcon.classList.toggle('hidden');
+            eyeOffIcon.classList.toggle('hidden');
+        });
+    }
 
-// Form submission
-const loginForm = document.getElementById('loginForm');
+    // 2. Lógica del Login
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // Detener el envío por defecto
 
-loginForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    
-    console.log('Login attempt:', { email, password });
-    
-    // Aquí conectarías con tu backend
-    alert('Funcionalidad de login - Conectar con backend para autenticación real');
-    
-    // Ejemplo de lo que harías en producción:
-    /*
-    fetch('/api/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            window.location.href = '/dashboard';
-        } else {
-            alert('Credenciales incorrectas');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-    */
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            // Credenciales exactas
+            const USER_VAL = "instructor@summas.pe";
+            const PASS_VAL = "12345678";
+
+            if (email === USER_VAL && password === PASS_VAL) {
+                // Si todo está bien, redirigir
+                console.log("Acceso correcto");
+                window.location.href = 'dash/dashboard.html';
+            } else {
+                // Si falla, avisar
+                alert("Usuario o contraseña incorrectos.\n\nPrueba con:\nUser: instructor@summas.pe\nPass: 12345678");
+            }
+        });
+    } else {
+        console.error("No se encontró el formulario con ID 'loginForm'");
+    }
 });
