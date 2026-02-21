@@ -110,74 +110,113 @@
             </div>
             <div class="modal-body">
                 <form id="formNuevaPlantilla">
-                    <div class="form-group">
-                        <label>Marca</label>
-                        <select class="form-control" id="marcaNueva" required>
-                            <option value="">Selecciona la marca</option>
-                            <option value="Lexus">Lexus</option>
-                            <option value="Toyota">Toyota</option>
-                            <option value="Honda">Honda</option>
-                            <option value="Nissan">Nissan</option>
-                            <option value="Mazda">Mazda</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Concesionario</label>
-                        <select class="form-control" id="concesionarioNuevo" required>
-                            <option value="">Selecciona el concesionario</option>
-                            <option value="Grupo Pana: Surco">Grupo Pana: Surco</option>
-                            <option value="Concesionario 1">Concesionario 1</option>
-                            <option value="Concesionario 2">Concesionario 2</option>
-                            <option value="Concesionario 3">Concesionario 3</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Capítulo</label>
-                            <select class="form-control" id="capituloNuevo" required>
-                                <option value="">Selecciona</option>
-                                <option value="Nuevo">Nuevo</option>
-                                <option value="Existente">Existente</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>&nbsp;</label>
-                            <input type="text" class="form-control" id="nombreCapitulo" placeholder="Nombre Nuevo" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Subcapítulo</label>
-                        <input type="text" class="form-control" id="subcapituloNuevo" placeholder="Nombre Nuevo" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Método</label>
-                        <select class="form-control" id="metodoNuevo" required>
-                            <option value="">Selecciona el método</option>
-                            <option value="Auditor Evidencia">Auditor Evidencia</option>
-                            <option value="Mystery Shopper">Mystery Shopper</option>
-                            <option value="Evaluación Directa">Evaluación Directa</option>
-                        </select>
-                    </div>
-                    
-                    <div class="modal-actions">
-                        <button type="button" class="btn-secondary" id="btnCancelarPlantilla">Cancelar</button>
-                        <button type="submit" class="btn-crear">Crear</button>
-                    </div>
-                </form>
+    <div class="form-row">
+        <div class="form-group">
+            <label>Empresa</label>
+            <select class="form-control" id="empresaNueva" required>
+                <option value="">Selecciona la empresa</option>
+                <option value="Empresa 1">Empresa 1</option>
+                <option value="Empresa 2">Empresa 2</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Marca</label>
+            <select class="form-control" id="marcaNueva" required>
+                <option value="">Selecciona la marca</option>
+                <option value="Lexus">Lexus</option>
+                <option value="Toyota">Toyota</option>
+                <option value="Honda">Honda</option>
+                <option value="Nissan">Nissan</option>
+                <option value="Mazda">Mazda</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label>Concesionaria</label>
+            <select class="form-control" id="concesionarioNuevo" required>
+                <option value="">Selecciona la concesionaria</option>
+                <option value="Grupo Pana: Surco">Grupo Pana: Surco</option>
+                <option value="Concesionario 1">Concesionario 1</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Local</label>
+            <select class="form-control" id="localNuevo" required>
+                <option value="">Selecciona el local</option>
+                <option value="Local 1">Local 1</option>
+                <option value="Local 2">Local 2</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label>Capítulo</label>
+            <select class="form-control" id="capituloNuevo" required>
+                <option value="Nuevo">Nuevo</option>
+                <option value="Existente">Existente</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>&nbsp;</label>
+            <input type="text" class="form-control" id="nombreCapitulo" placeholder="Nombre nuevo">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label>Subcapítulo</label>
+            <select class="form-control" id="subcapituloSelect" required>
+                <option value="Nuevo">Nuevo</option>
+                <option value="Existente">Existente</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>&nbsp;</label>
+            <input type="text" class="form-control" id="nombreSubcapitulo" placeholder="Nombre nuevo">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Nombre de plantilla</label>
+        <input type="text" class="form-control" id="nombrePlantilla" placeholder="Auditor evidencia" required>
+    </div>
+
+    <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="btnCancelarPlantilla">Cancelar</button>
+        <button type="submit" class="btn-crear">Guardar</button>
+    </div>
+</form>
             </div>
         </div>
     </div>
+
+    <!-- Modal Acción Completada -->
+<div id="accionCompletadaModal" class="modal">
+    <div class="modal-content modal-plantilla">
+        <div class="modal-header">
+            <h2>Acción completada</h2>
+            <span class="close-modal" id="closeAccionCompletada">&times;</span>
+        </div>
+        <div class="modal-body" style="text-align: center; padding: 40px 30px;">
+            <p style="color: #1D3579; font-size: 16px; font-weight: 500; line-height: 1.6;">
+                Los cambios se realizaron correctamente.<br>Ya puedes cerrar esta ventana.
+            </p>
+            <div class="modal-actions" style="justify-content: center; border-top: none; margin-top: 25px;">
+                <button class="btn-crear" id="btnCerrarAccion" style="flex: unset; padding: 12px 50px;">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
     <!-- Modal de Perfil -->
     <div id="profileModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Perfil de Usuario</h2>
-                <span class="close-modal">&times;</span>
+                <span class="close-modal" onclick="document.getElementById('profileModal').classList.remove('show'); document.body.style.overflow='auto';">&times;</span>
             </div>
             <div class="modal-body">
                 <div class="profile-avatar">

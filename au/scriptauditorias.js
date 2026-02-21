@@ -1,17 +1,31 @@
 // =============================================
-// CONFIGURACIÓN DE LA API
-// =============================================
-const API_URL = 'http://127.0.0.1:8000';
-
 // Variables globales
+// =============================================
 let currentPage = 1;
 const itemsPerPage = 10;
 let auditoriasData = [];
 let filteredAuditorias = [];
-let empresasData = [];
-let marcasData = [];
-let localesData = [];
-let tiposEvaluacionData = [];
+
+// =============================================
+// PERSISTENCIA EN localStorage
+// =============================================
+function saveAuditoriasToStorage() {
+    try {
+        localStorage.setItem('auditorias_data', JSON.stringify(auditoriasData));
+    } catch (e) {
+        console.warn('No se pudo guardar en localStorage:', e);
+    }
+}
+
+function loadAuditoriasFromStorage() {
+    try {
+        const stored = localStorage.getItem('auditorias_data');
+        return stored ? JSON.parse(stored) : [];
+    } catch (e) {
+        console.warn('No se pudo leer localStorage:', e);
+        return [];
+    }
+}
 
 // =============================================
 // INICIALIZACIÓN
@@ -24,87 +38,16 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeDetalleAuditoriaModal();
 });
 
-// Cargar datos iniciales desde la API
-async function loadInitialData() {
-    try {
-        showNotification('Cargando datos...', 'info');
-        
-        // Cargar datos en paralelo
-        const [empresas, marcas, locales, tipos, auditorias] = await Promise.all([
-            fetch(`${API_URL}/empresas`).then(r => r.json()),
-            fetch(`${API_URL}/marcas`).then(r => r.json()),
-            fetch(`${API_URL}/locales`).then(r => r.json()),
-            fetch(`${API_URL}/tipos-evaluacion`).then(r => r.json()),
-            fetch(`${API_URL}/auditorias`).then(r => r.json())
-        ]);
-        
-        empresasData = empresas;
-        marcasData = marcas;
-        localesData = locales;
-        tiposEvaluacionData = tipos;
-        auditoriasData = auditorias;
-        filteredAuditorias = [...auditoriasData];
-        
-        initializeFilters();
-        populateFormSelects();
-        renderAuditorias();
-        
-        showNotification('Datos cargados correctamente', 'success');
-    } catch (error) {
-        console.error('Error cargando datos:', error);
-        showNotification('Error al cargar los datos. Verifica que la API esté corriendo.', 'error');
-    }
-}
+// =============================================
+// CARGAR DATOS INICIALES
+// =============================================
+function loadInitialData() {
+    // Cargar desde localStorage (sin API)
+    auditoriasData = loadAuditoriasFromStorage();
 
-// Poblar los selects del formulario de nueva auditoría
-function populateFormSelects() {
-    // Select de Empresas
-    const nuevaEmpresaSelect = document.getElementById('nuevaEmpresa');
-    if (nuevaEmpresaSelect) {
-        nuevaEmpresaSelect.innerHTML = '<option value="">Selecciona la empresa</option>';
-        empresasData.forEach(empresa => {
-            const option = document.createElement('option');
-            option.value = empresa.id;
-            option.textContent = empresa.nombre;
-            nuevaEmpresaSelect.appendChild(option);
-        });
-    }
-    
-    // Select de Marcas
-    const nuevaMarcaSelect = document.getElementById('nuevaMarca');
-    if (nuevaMarcaSelect) {
-        nuevaMarcaSelect.innerHTML = '<option value="">Selecciona la marca</option>';
-        marcasData.forEach(marca => {
-            const option = document.createElement('option');
-            option.value = marca.id;
-            option.textContent = marca.nombre;
-            nuevaMarcaSelect.appendChild(option);
-        });
-    }
-    
-    // Select de Locales
-    const nuevoLocalSelect = document.getElementById('nuevoLocal');
-    if (nuevoLocalSelect) {
-        nuevoLocalSelect.innerHTML = '<option value="">Selecciona el local</option>';
-        localesData.forEach(local => {
-            const option = document.createElement('option');
-            option.value = local.id;
-            option.textContent = local.nombre;
-            nuevoLocalSelect.appendChild(option);
-        });
-    }
-    
-    // Select de Tipos de Evaluación
-    const nuevaEvaluacionSelect = document.getElementById('nuevaEvaluacion');
-    if (nuevaEvaluacionSelect) {
-        nuevaEvaluacionSelect.innerHTML = '<option value="">Selecciona la evaluación</option>';
-        tiposEvaluacionData.forEach(tipo => {
-            const option = document.createElement('option');
-            option.value = tipo.id;
-            option.textContent = tipo.nombre;
-            nuevaEvaluacionSelect.appendChild(option);
-        });
-    }
+    filteredAuditorias = [...auditoriasData];
+    initializeFilters();
+    renderAuditorias();
 }
 
 // =============================================
@@ -112,7 +55,7 @@ function populateFormSelects() {
 // =============================================
 function initializeFilters() {
     const empresaSelect = document.getElementById('empresa');
-    const estadoSelect = document.getElementById('estado');
+    const estadoSelect  = document.getElementById('estado');
 
     if (empresaSelect) {
         empresaSelect.innerHTML = '<option value="">Selecciona la empresa</option>';
@@ -127,7 +70,7 @@ function initializeFilters() {
 
     if (estadoSelect) {
         estadoSelect.innerHTML = '<option value="">Selecciona el estado</option>';
-        const estados = ['Pendiente', 'Completado'];
+        const estados = ['Pendiente', 'En Proceso', 'Completado'];
         estados.forEach(estado => {
             const option = document.createElement('option');
             option.value = estado;
@@ -139,11 +82,11 @@ function initializeFilters() {
 
 function applyFilters() {
     const empresa = document.getElementById('empresa').value;
-    const estado = document.getElementById('estado').value;
+    const estado  = document.getElementById('estado').value;
 
     filteredAuditorias = auditoriasData.filter(auditoria => {
         const empresaMatch = !empresa || auditoria.empresa === empresa;
-        const estadoMatch = !estado || auditoria.estado === estado;
+        const estadoMatch  = !estado  || auditoria.estado  === estado;
         return empresaMatch && estadoMatch;
     });
 
@@ -155,7 +98,6 @@ function applyFilters() {
 // EVENT LISTENERS
 // =============================================
 function setupEventListeners() {
-    // Botón de refresh
     const refreshBtn = document.querySelector('.refresh-btn');
     if (refreshBtn) {
         refreshBtn.addEventListener('click', function() {
@@ -167,22 +109,15 @@ function setupEventListeners() {
         });
     }
 
-    // Botón de exportar
     const exportBtn = document.querySelector('.export-btn');
     if (exportBtn) {
-        exportBtn.addEventListener('click', function() {
-            exportData();
-        });
+        exportBtn.addEventListener('click', exportData);
     }
 
-    // Filtros
     document.querySelectorAll('.filter-select').forEach(select => {
-        select.addEventListener('change', function() {
-            applyFilters();
-        });
+        select.addEventListener('change', applyFilters);
     });
 
-    // Paginación
     const prevBtn = document.getElementById('prevPage');
     const nextBtn = document.getElementById('nextPage');
 
@@ -212,10 +147,11 @@ function setupEventListeners() {
 // MODAL NUEVA AUDITORÍA
 // =============================================
 function initializeNuevaAuditoriaModal() {
-    const btnNuevaAuditoria = document.getElementById('btnNuevaAuditoria');
+    const btnNuevaAuditoria   = document.getElementById('btnNuevaAuditoria');
     const nuevaAuditoriaModal = document.getElementById('nuevaAuditoriaModal');
     const closeNuevaAuditoria = document.getElementById('closeNuevaAuditoria');
-    const formNuevaAuditoria = document.getElementById('formNuevaAuditoria');
+    const btnCancelar         = document.getElementById('btnCancelarAuditoria');
+    const formNuevaAuditoria  = document.getElementById('formNuevaAuditoria');
 
     if (btnNuevaAuditoria) {
         btnNuevaAuditoria.addEventListener('click', function() {
@@ -228,6 +164,14 @@ function initializeNuevaAuditoriaModal() {
         closeNuevaAuditoria.addEventListener('click', function() {
             nuevaAuditoriaModal.classList.remove('show');
             document.body.style.overflow = 'auto';
+        });
+    }
+
+    if (btnCancelar) {
+        btnCancelar.addEventListener('click', function() {
+            nuevaAuditoriaModal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+            document.getElementById('formNuevaAuditoria').reset();
         });
     }
 
@@ -248,72 +192,64 @@ function initializeNuevaAuditoriaModal() {
     });
 
     if (formNuevaAuditoria) {
-        formNuevaAuditoria.addEventListener('submit', async function(event) {
+        formNuevaAuditoria.addEventListener('submit', function(event) {
             event.preventDefault();
-            await crearNuevaAuditoria();
+            crearNuevaAuditoria();
         });
     }
 }
 
-// Crear nueva auditoría en la API
-async function crearNuevaAuditoria() {
-    const empresa_id = parseInt(document.getElementById('nuevaEmpresa').value);
-    const marca_id = parseInt(document.getElementById('nuevaMarca').value);
-    const local_id = parseInt(document.getElementById('nuevoLocal').value);
-    const evaluacion_id = parseInt(document.getElementById('nuevaEvaluacion').value);
-    const auditor = document.getElementById('nuevoAuditor').value;
-    const fecha = document.getElementById('nuevaFecha').value;
-    
-    if (!empresa_id || !marca_id || !local_id || !evaluacion_id || !auditor || !fecha) {
-        showNotification('Por favor, complete todos los campos', 'error');
+// =============================================
+// CREAR NUEVA AUDITORÍA — guarda en localStorage
+// =============================================
+function crearNuevaAuditoria() {
+    const empresa       = document.getElementById('nuevaEmpresa').value;
+    const marca         = document.getElementById('nuevaMarca').value;
+    const concesionaria = document.getElementById('nuevaConcesionaria').value;
+    const local         = document.getElementById('nuevoLocal').value;
+    const evaluacion    = document.getElementById('nuevaEvaluacion').value;
+    const auditor       = document.getElementById('nuevoAuditor').value.trim();
+    const fecha         = document.getElementById('nuevaFecha').value;
+
+    if (!empresa || !marca || !concesionaria || !local || !evaluacion || !auditor || !fecha) {
+        showNotification('Por favor, completa todos los campos', 'error');
         return;
     }
-    
+
     const nuevaAuditoria = {
-        empresa_id: empresa_id,
-        marca_id: marca_id,
-        local_id: local_id,
-        evaluacion_id: evaluacion_id,
-        auditor: auditor,
-        fecha: fecha,
-        estado: 'Pendiente'
+        id: Date.now(),
+        empresa,
+        marca,
+        concesionaria,
+        local,
+        evaluacion,
+        auditor,
+        fecha,
+        estado: 'Pendiente',
+        cumplimiento_porcentaje: null
     };
-    
-    try {
-        const response = await fetch(`${API_URL}/auditorias`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(nuevaAuditoria)
-        });
-        
-        if (!response.ok) {
-            throw new Error('Error al crear la auditoría');
-        }
-        
-        const result = await response.json();
-        showNotification('Auditoría creada exitosamente', 'success');
-        
-        // Cerrar modal y limpiar formulario
-        document.getElementById('formNuevaAuditoria').reset();
-        document.getElementById('nuevaAuditoriaModal').classList.remove('show');
-        document.body.style.overflow = 'auto';
-        
-        // Recargar datos
-        await loadInitialData();
-        
-    } catch (error) {
-        console.error('Error:', error);
-        showNotification('Error al crear la auditoría', 'error');
-    }
+
+    auditoriasData.push(nuevaAuditoria);
+    filteredAuditorias = [...auditoriasData];
+
+    // ← Guardar en localStorage para que el detalle pueda leerla
+    saveAuditoriasToStorage();
+
+    showNotification('Auditoría creada exitosamente', 'success');
+
+    document.getElementById('formNuevaAuditoria').reset();
+    document.getElementById('nuevaAuditoriaModal').classList.remove('show');
+    document.body.style.overflow = 'auto';
+
+    initializeFilters();
+    renderAuditorias();
 }
 
 // =============================================
 // MODAL DETALLE AUDITORÍA
 // =============================================
 function initializeDetalleAuditoriaModal() {
-    const modal = document.getElementById('detalleAuditoriaModal');
+    const modal    = document.getElementById('detalleAuditoriaModal');
     const closeBtn = document.getElementById('closeDetalleAuditoria');
 
     if (closeBtn) {
@@ -341,45 +277,70 @@ function initializeDetalleAuditoriaModal() {
 }
 
 function openDetalleAuditoria(id) {
+    // Recargar desde localStorage para tener el estado actualizado (ej. si volvió de detalle)
+    auditoriasData     = loadAuditoriasFromStorage();
+    filteredAuditorias = [...auditoriasData];
+
     const auditoria = auditoriasData.find(a => a.id === id);
     if (!auditoria) return;
 
-    const modal = document.getElementById('detalleAuditoriaModal');
+    const modal       = document.getElementById('detalleAuditoriaModal');
     const estadoBadge = document.getElementById('detalleEstado');
-    const btnAction = document.getElementById('btnDetalleAction');
+    const btnAction   = document.getElementById('btnDetalleAction');
 
-    // Llenar datos
-    document.getElementById('detalleEmpresa').textContent = auditoria.empresa + ': ' + auditoria.marca + ' - ' + auditoria.local;
+    document.getElementById('detalleEmpresa').textContent =
+        auditoria.empresa + ': ' + auditoria.marca + ' - ' + auditoria.local;
     document.getElementById('detalleEvaluacion').textContent = auditoria.evaluacion;
-    document.getElementById('detalleFecha').textContent = formatDateFromSQL(auditoria.fecha);
-    document.getElementById('detalleAuditor').textContent = auditoria.auditor || '-';
-    
-    // Mostrar cumplimiento si existe
-    const cumplimientoText = auditoria.cumplimiento_porcentaje !== null && auditoria.cumplimiento_porcentaje !== undefined
-        ? auditoria.cumplimiento_porcentaje.toFixed(2) + '%'
-        : 'Sin calificar';
+    document.getElementById('detalleFecha').textContent      = formatDateFromSQL(auditoria.fecha);
+    document.getElementById('detalleAuditor').textContent    = auditoria.auditor || '-';
+
+    const cumplimientoText =
+        auditoria.cumplimiento_porcentaje !== null &&
+        auditoria.cumplimiento_porcentaje !== undefined
+            ? auditoria.cumplimiento_porcentaje.toFixed(2) + '%'
+            : 'Sin calificar';
     document.getElementById('detalleCumplimiento').textContent = cumplimientoText;
 
-    // Configurar badge de estado
-    estadoBadge.textContent = auditoria.estado;
     estadoBadge.className = 'detalle-status-badge';
-    
-    // Reset button classes
-    btnAction.className = 'btn-detalle-action';
+    btnAction.className   = 'btn-detalle-action';
 
-    if (auditoria.estado === 'Pendiente') {
-        estadoBadge.classList.add('pendiente');
-        btnAction.textContent = 'Empezar';
-    } else if (auditoria.estado === 'Completado') {
-        estadoBadge.classList.add('finalizada');
-        btnAction.classList.add('finalizada');
-        btnAction.textContent = 'Ver Resultados';
+    switch (auditoria.estado) {
+        case 'Pendiente':
+            estadoBadge.classList.add('pendiente');
+            estadoBadge.textContent = 'Pendiente';
+            btnAction.textContent   = 'Empezar';
+            btnAction.onclick = function() {
+                window.location.href = 'Detalleauditoria.html?id=' + id;
+            };
+            break;
+
+        case 'En Proceso':
+            estadoBadge.classList.add('en-proceso');
+            estadoBadge.textContent = 'En Proceso';
+            btnAction.classList.add('en-proceso');
+            btnAction.textContent   = 'Continuar';
+            btnAction.onclick = function() {
+                window.location.href = 'Detalleauditoria.html?id=' + id;
+            };
+            break;
+
+        case 'Completado':
+            estadoBadge.classList.add('completado');
+            estadoBadge.textContent = 'Completado';
+            btnAction.classList.add('completado');
+            btnAction.textContent   = 'Ver Resultados';
+            btnAction.onclick = function() {
+                window.location.href = 'Dashauditorias.html?id=' + id;
+            };
+            break;
+
+        default:
+            estadoBadge.textContent = auditoria.estado;
+            btnAction.textContent   = 'Ver';
+            btnAction.onclick = function() {
+                window.location.href = 'Detalleauditoria.html?id=' + id;
+            };
     }
-
-    // Acción del botón
-    btnAction.onclick = function() {
-        window.location.href = 'Detalleauditoria.html?id=' + id;
-    };
 
     modal.classList.add('show');
     document.body.style.overflow = 'hidden';
@@ -389,22 +350,31 @@ function openDetalleAuditoria(id) {
 // RENDERIZADO
 // =============================================
 function renderAuditorias() {
+    // Sincronizar estados actualizados desde localStorage
+    const stored = loadAuditoriasFromStorage();
+    auditoriasData.forEach((a, i) => {
+        const updated = stored.find(s => s.id === a.id);
+        if (updated) {
+            auditoriasData[i].estado = updated.estado;
+            auditoriasData[i].cumplimiento_porcentaje = updated.cumplimiento_porcentaje;
+        }
+    });
+
     const container = document.getElementById('auditoriasList');
     if (!container) return;
 
     container.innerHTML = '';
 
     const start = (currentPage - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
+    const end   = start + itemsPerPage;
     const pageAuditorias = filteredAuditorias.slice(start, end);
 
     if (pageAuditorias.length === 0) {
         container.innerHTML = `
-            <div style="text-align: center; padding: 60px 20px; color: #666;">
-                <p style="font-size: 18px; font-weight: 600;">No se encontraron auditorías</p>
-                <p style="font-size: 14px; margin-top: 10px;">Intenta ajustar los filtros o crear una nueva auditoría</p>
-            </div>
-        `;
+            <div style="text-align:center; padding:60px 20px; color:#666;">
+                <p style="font-size:18px; font-weight:600;">No se encontraron auditorías</p>
+                <p style="font-size:14px; margin-top:10px;">Intenta ajustar los filtros o crear una nueva auditoría</p>
+            </div>`;
         return;
     }
 
@@ -421,12 +391,15 @@ function createAuditoriaCard(auditoria) {
     const card = document.createElement('div');
     card.className = 'auditoria-card';
 
-    const statusClass = auditoria.estado === 'Completado' ? 'completed' : '';
-    
-    // Mostrar cumplimiento si existe, sino mostrar "-"
-    const cumplimientoDisplay = auditoria.cumplimiento_porcentaje !== null && auditoria.cumplimiento_porcentaje !== undefined
-        ? auditoria.cumplimiento_porcentaje.toFixed(2) + '%'
-        : '-';
+    const statusClass = auditoria.estado === 'Completado' ? 'completed'
+                      : auditoria.estado === 'En Proceso'  ? 'in-progress'
+                      : '';
+
+    const cumplimientoDisplay =
+        auditoria.cumplimiento_porcentaje !== null &&
+        auditoria.cumplimiento_porcentaje !== undefined
+            ? auditoria.cumplimiento_porcentaje.toFixed(2) + '%'
+            : '-';
 
     card.innerHTML = `
         <div class="auditoria-info">
@@ -450,8 +423,7 @@ function createAuditoriaCard(auditoria) {
         </div>
         <div class="auditoria-action">
             <button class="btn-ir" onclick="openDetalleAuditoria(${auditoria.id})">Ir</button>
-        </div>
-    `;
+        </div>`;
 
     return card;
 }
@@ -460,70 +432,61 @@ function createAuditoriaCard(auditoria) {
 // UTILIDADES
 // =============================================
 function formatDateFromSQL(dateString) {
-    // Convierte YYYY-MM-DD a DD/MM/YYYY
+    if (!dateString) return '-';
     const [year, month, day] = dateString.split('-');
     return `${day}/${month}/${year}`;
 }
 
-function formatDate(dateString) {
-    // Para mantener compatibilidad
-    return formatDateFromSQL(dateString);
-}
-
 function updatePaginationInfo() {
     const currentPageSpan = document.getElementById('currentPage');
-    if (currentPageSpan) {
-        currentPageSpan.textContent = currentPage;
-    }
+    if (currentPageSpan) currentPageSpan.textContent = currentPage;
 }
 
 function updatePaginationButtons() {
-    const prevBtn = document.getElementById('prevPage');
-    const nextBtn = document.getElementById('nextPage');
+    const prevBtn    = document.getElementById('prevPage');
+    const nextBtn    = document.getElementById('nextPage');
     const totalPages = Math.ceil(filteredAuditorias.length / itemsPerPage);
 
-    if (prevBtn) {
-        prevBtn.disabled = currentPage === 1;
-    }
-
-    if (nextBtn) {
-        nextBtn.disabled = currentPage >= totalPages;
-    }
+    if (prevBtn) prevBtn.disabled = currentPage === 1;
+    if (nextBtn) nextBtn.disabled = currentPage >= totalPages;
 }
 
-async function refreshData() {
-    console.log('Refrescando datos...');
-    await loadInitialData();
+function refreshData() {
+    auditoriasData     = loadAuditoriasFromStorage();
+    filteredAuditorias = [...auditoriasData];
+    initializeFilters();
+    renderAuditorias();
 }
 
 function exportData() {
-    console.log('Exportando datos...');
     const csvContent = generateCSV();
     downloadCSV(csvContent, 'auditorias_export.csv');
     showNotification('Datos exportados correctamente', 'success');
 }
 
 function generateCSV() {
-    let csv = '\uFEFF'; // BOM para Excel UTF-8
+    let csv = '\uFEFF';
     csv += 'Empresa,Marca,Local,Evaluación,Fecha,Auditor,Estado,Cumplimiento %\n';
-    
+
     filteredAuditorias.forEach(auditoria => {
-        const cumplimiento = auditoria.cumplimiento_porcentaje !== null && auditoria.cumplimiento_porcentaje !== undefined
-            ? auditoria.cumplimiento_porcentaje.toFixed(2) + '%'
-            : 'Pendiente';
-        
+        const cumplimiento =
+            auditoria.cumplimiento_porcentaje !== null &&
+            auditoria.cumplimiento_porcentaje !== undefined
+                ? auditoria.cumplimiento_porcentaje.toFixed(2) + '%'
+                : 'Pendiente';
+
         csv += `${auditoria.empresa},${auditoria.marca},${auditoria.local},`;
         csv += `${auditoria.evaluacion},${formatDateFromSQL(auditoria.fecha)},`;
         csv += `${auditoria.auditor},${auditoria.estado},${cumplimiento}\n`;
     });
-    
+
     return csv;
 }
 
 function downloadCSV(content, filename) {
     const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
-    
+
     if (navigator.msSaveBlob) {
         navigator.msSaveBlob(blob, filename);
     } else {
@@ -537,27 +500,27 @@ function downloadCSV(content, filename) {
 // MODAL DE PERFIL
 // =============================================
 function initializeProfileModal() {
-    const modal = document.getElementById('profileModal');
-    const userIcon = document.querySelector('.user-icon');
-    const closeModal = document.querySelector('#profileModal .close-modal');
+    const modal          = document.getElementById('profileModal');
+    const userIcon       = document.querySelector('.user-icon');
+    const closeModal     = document.querySelector('#profileModal .close-modal');
     const btnEditProfile = document.getElementById('btnEditProfile');
-    const btnChangePassword = document.getElementById('btnChangePassword');
-    const btnLogout = document.getElementById('btnLogout');
-    
+    const btnChangePass  = document.getElementById('btnChangePassword');
+    const btnLogout      = document.getElementById('btnLogout');
+
     if (userIcon) {
         userIcon.addEventListener('click', function() {
             modal.classList.add('show');
             document.body.style.overflow = 'hidden';
         });
     }
-    
+
     if (closeModal) {
         closeModal.addEventListener('click', function() {
             modal.classList.remove('show');
             document.body.style.overflow = 'auto';
         });
     }
-    
+
     if (modal) {
         modal.addEventListener('click', function(event) {
             if (event.target === modal) {
@@ -566,23 +529,14 @@ function initializeProfileModal() {
             }
         });
     }
-    
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape' && modal && modal.classList.contains('show')) {
-            modal.classList.remove('show');
-            document.body.style.overflow = 'auto';
-        }
-    });
-    
+
     if (btnEditProfile) {
         btnEditProfile.addEventListener('click', function() {
-            const inputs = document.querySelectorAll('#profileModal .info-group input');
+            const inputs    = document.querySelectorAll('#profileModal .info-group input');
             const isEditing = this.textContent === 'Guardar Cambios';
-            
+
             if (isEditing) {
-                inputs.forEach(input => {
-                    input.setAttribute('readonly', true);
-                });
+                inputs.forEach(input => input.setAttribute('readonly', true));
                 this.textContent = 'Editar Perfil';
                 this.classList.remove('btn-primary');
                 this.classList.add('btn-secondary');
@@ -600,24 +554,22 @@ function initializeProfileModal() {
             }
         });
     }
-    
-    if (btnChangePassword) {
-        btnChangePassword.addEventListener('click', function() {
+
+    if (btnChangePass) {
+        btnChangePass.addEventListener('click', function() {
             showNotification('Funcionalidad de cambio de contraseña próximamente', 'info');
         });
     }
-    
+
     if (btnLogout) {
         btnLogout.addEventListener('click', function() {
             if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
                 showNotification('Cerrando sesión...', 'info');
-                setTimeout(() => {
-                    window.location.href = 'login.html';
-                }, 1000);
+                setTimeout(() => { window.location.href = 'login.html'; }, 1000);
             }
         });
     }
-    
+
     const btnChangePhoto = document.querySelector('.btn-change-photo');
     if (btnChangePhoto) {
         btnChangePhoto.addEventListener('click', function() {
@@ -633,46 +585,30 @@ function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
     notification.className = 'notification';
     notification.textContent = message;
-    
+
     let backgroundColor;
-    switch(type) {
-        case 'success':
-            backgroundColor = 'linear-gradient(135deg, #10B981 0%, #059669 100%)';
-            break;
-        case 'error':
-            backgroundColor = 'linear-gradient(135deg, #DC2626 0%, #B91C1C 100%)';
-            break;
-        case 'warning':
-            backgroundColor = 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)';
-            break;
-        default:
-            backgroundColor = 'linear-gradient(135deg, #1D3579 0%, #48BED7 100%)';
+    switch (type) {
+        case 'success': backgroundColor = 'linear-gradient(135deg, #10B981 0%, #059669 100%)'; break;
+        case 'error':   backgroundColor = 'linear-gradient(135deg, #DC2626 0%, #B91C1C 100%)'; break;
+        case 'warning': backgroundColor = 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)'; break;
+        default:        backgroundColor = 'linear-gradient(135deg, #1D3579 0%, #48BED7 100%)';
     }
-    
+
     notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: ${backgroundColor};
-        color: white;
-        padding: 15px 25px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        z-index: 10000;
-        font-weight: 600;
-        animation: slideInRight 0.3s ease;
+        position: fixed; top: 20px; right: 20px;
+        background: ${backgroundColor}; color: white;
+        padding: 15px 25px; border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,.2);
+        z-index: 10000; font-weight: 600;
+        font-family: 'Inter', sans-serif;
     `;
-    
+
     document.body.appendChild(notification);
-    
     setTimeout(() => {
-        notification.style.animation = 'slideOutRight 0.3s ease';
         setTimeout(() => {
-            if (document.body.contains(notification)) {
-                document.body.removeChild(notification);
-            }
+            if (document.body.contains(notification)) document.body.removeChild(notification);
         }, 300);
     }, 3000);
 }
 
-console.log('Sistema de auditorías con FastAPI inicializado correctamente');
+console.log('Sistema de auditorías inicializado — modo localStorage (sin API).');

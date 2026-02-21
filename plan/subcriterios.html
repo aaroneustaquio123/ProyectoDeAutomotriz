@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summas - Subcriterios</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="stylesub.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="../LogoSummas.png" alt="Summas Consultoría">
+        </div>
+        <nav>
+            <a href="../dash/dashboard.html">Dashboard</a>
+            <a href="../au/auditorias.html">Auditorías</a>
+            <a href="plantillas.html" class="active">Plantillas</a>
+            <a href="../em/empresa.html">Empresas</a>
+        </nav>
+        <div class="user-icon" id="userIconBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+        </div>
+    </header>
+
+    <div class="content">
+        <a href="javascript:history.back()" class="btn-volver">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            Volver
+        </a>
+
+        <h1 class="page-title" id="pageTitle">SUBCRITERIOS - CAPTACION DE CLIENTES</h1>
+
+        <!-- Lista de subcriterios -->
+        <div class="criterios-section">
+            <div class="criterios-list" id="subcriteriosList">
+                <div class="criterio-item">
+                    <span class="criterio-nombre">TRABAJO DE CAPTACION DE CLIENTES</span>
+                    <svg class="criterio-arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </div>
+                <div class="criterio-item">
+                    <span class="criterio-nombre">CITAS DE SERVICIO</span>
+                    <svg class="criterio-arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </div>
+                <div class="criterio-item">
+                    <span class="criterio-nombre">INFRAESTRUCTURA</span>
+                    <svg class="criterio-arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </div>
+                <div class="criterio-item">
+                    <span class="criterio-nombre">EQUIPAMIENTOS</span>
+                    <svg class="criterio-arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </div>
+                <div class="criterio-item">
+                    <span class="criterio-nombre">RECEPCIÓN ACTIVA</span>
+                    <svg class="criterio-arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="bottom-actions">
+            <button class="btn-editar" id="btnEditar">Editar</button>
+            <button class="btn-agregar" id="btnAgregar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Agregar Subcriterio
+            </button>
+        </div>
+    </div>
+
+    <!-- ========================
+         MODAL: NUEVO SUBCRITERIO
+    ======================== -->
+    <div id="modalNuevoSubcriterio" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>Nuevo Subcriterio</h2>
+                <span class="close-modal" id="closeNuevoSubcriterio">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Nombre del Criterio</label>
+                    <select class="form-control" id="selectCriterioSub">
+                        <option>Criterio X</option>
+                        <option>CAPTACION DE CLIENTES</option>
+                        <option>CITAS DE SERVICIO</option>
+                        <option>RECEPCION DE SERVICIO</option>
+                        <option>ASISTENCIA TECNICA</option>
+                        <option>DISTRIBUCIÓN</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-top:15px;">
+                    <label>Nombre del subcriterio</label>
+                    <div class="input-row">
+                        <select class="form-control select-small" id="selectTipoSub">
+                            <option>Nuevo</option>
+                            <option>Existente</option>
+                        </select>
+                        <input type="text" class="form-control" id="inputNombreSub" placeholder="Nombre nuevo">
+                    </div>
+                </div>
+                <div class="modal-actions-center">
+                    <button class="btn-crear" id="btnCrearSubcriterio">Crear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================
+         MODAL: EDITAR SUBCRITERIOS
+    ======================== -->
+    <div id="modalEditarSubcriterios" class="modal">
+        <div class="modal-content modal-editar">
+            <div class="modal-header">
+                <h2>Editar Subcriterios</h2>
+                <span class="close-modal" id="closeEditarSub">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="ec-list" id="ecListSub"></div>
+                <div class="ec-bottom-actions">
+                    <button class="btn-cancelar-editar" id="btnCancelarEditar">Cancelar</button>
+                    <button class="btn-guardar" id="btnGuardarEditar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                        Guardar Cambios
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================
+         MODAL: CONFIRMAR GUARDAR
+    ======================== -->
+    <div id="modalGuardar" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>Guardar Cambios</h2>
+                <span class="close-modal" id="closeGuardar">&times;</span>
+            </div>
+            <div class="modal-body modal-confirm-body">
+                <p class="confirm-question">¿Esta seguro de guardar?</p>
+                <p class="confirm-desc">Recuerda que todos los cambios que hayas realizado se guardarán de forma definitiva.</p>
+                <div class="confirm-actions">
+                    <button class="btn-si" id="btnSiGuardar">Sí</button>
+                    <button class="btn-no" id="btnNoGuardar">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================
+         MODAL: CONFIRMAR CANCELAR
+    ======================== -->
+    <div id="modalCancelar" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>Cancelar Cambios</h2>
+                <span class="close-modal" id="closeCancelar">&times;</span>
+            </div>
+            <div class="modal-body modal-confirm-body">
+                <p class="confirm-question">¿Esta seguro de salir?</p>
+                <p class="confirm-desc">Recuerda que todos los cambios que hayas realizado serán cancelados y no se guardarán.</p>
+                <div class="confirm-actions">
+                    <button class="btn-si" id="btnSiCancelar">Sí</button>
+                    <button class="btn-no" id="btnNoCancelar">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Perfil -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Perfil de Usuario</h2>
+                <span class="close-modal" id="closeProfileModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="profile-avatar">
+                    <div class="avatar-circle">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#1D3579">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                    </div>
+                    <button class="btn-change-photo">Cambiar foto</button>
+                </div>
+                <div class="profile-info">
+                    <div class="info-row">
+                        <div class="info-group">
+                            <label>Nombre completo</label>
+                            <input type="text" value="Juan Pérez" readonly>
+                        </div>
+                        <div class="info-group">
+                            <label>Email</label>
+                            <input type="email" value="juan.perez@summas.com" readonly>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-group">
+                            <label>Cargo</label>
+                            <input type="text" value="Auditor Senior" readonly>
+                        </div>
+                        <div class="info-group">
+                            <label>Departamento</label>
+                            <input type="text" value="Control de Calidad" readonly>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-group">
+                            <label>Teléfono</label>
+                            <input type="tel" value="+51 999 888 777" readonly>
+                        </div>
+                        <div class="info-group">
+                            <label>Fecha de ingreso</label>
+                            <input type="text" value="15/03/2023" readonly>
+                        </div>
+                    </div>
+                    <div class="info-row single">
+                        <div class="info-group full-width">
+                            <label>Permisos</label>
+                            <div class="permissions-tags">
+                                <span class="tag">Administrador</span>
+                                <span class="tag">Auditorías</span>
+                                <span class="tag">Reportes</span>
+                                <span class="tag">Gestión de Usuarios</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-secondary" id="btnEditProfile">Editar Perfil</button>
+                    <button class="btn-primary" id="btnChangePassword">Cambiar Contraseña</button>
+                    <button class="btn-danger" id="btnLogout">Cerrar Sesión</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scriptsub.js"></script>
+</body>
+</html>

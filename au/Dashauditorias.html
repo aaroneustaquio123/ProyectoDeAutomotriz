@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summas - Auditoría Finalizada</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Dashauditorias.css">
+</head>
+<body>
+
+    <!-- ══════════════════════════════
+         HEADER
+    ══════════════════════════════ -->
+    <header>
+        <div class="logo-container">
+            <img src="../LogoSummas.png" alt="Summas Consultoría"
+                 onerror="this.style.display='none';document.getElementById('logoText').style.display='flex'">
+            <div id="logoText" class="logo-text" style="display:none">
+                <span class="logo-sum">sum</span><span class="logo-mas">mas</span>
+                <span class="logo-sub">Consultoría</span>
+            </div>
+        </div>
+
+        <nav>
+            <a href="../dash/dashboard.html">Dashboard</a>
+            <a href="auditorias.html" class="active">Auditorías</a>
+            <a href="../plan/plantillas.html">Plantillas</a>
+            <a href="../em/empresa.html">Empresas</a>
+        </nav>
+
+        <div class="user-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+        </div>
+    </header>
+
+    <!-- ══════════════════════════════
+         CONTENT
+    ══════════════════════════════ -->
+    <div class="content">
+
+        <!-- Volver -->
+        <a class="btn-volver" href="auditorias.html">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none"
+                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                 stroke-linejoin="round" viewBox="0 0 24 24">
+                <polyline points="15 18 9 12 15 6"/>
+            </svg>
+            Volver
+        </a>
+
+        <!-- Título -->
+        <h1 class="page-title">Auditoría</h1>
+
+        <!-- Info cabecera — llenado por JS -->
+        <div class="auditoria-header-grid" id="auditoriaHeaderGrid"></div>
+
+        <!-- Título sección -->
+        <h2 class="section-title">Subsanar Incumplimientos</h2>
+
+        <!-- Lista incumplimientos — llenado por JS -->
+        <div class="incumplimientos-list" id="incumplimientosList"></div>
+
+    </div>
+
+    <!-- ══════════════════════════════
+         MODAL COMENTARIO Y EVIDENCIA
+    ══════════════════════════════ -->
+    <div id="modalValidar" class="modal-overlay">
+        <div class="modal-validar">
+
+            <!-- Header con gradiente -->
+            <div class="modal-validar-header">
+                <h3>Comentario y Evidencia</h3>
+                <button class="modal-validar-close" onclick="cerrarModalValidar()">&#x2715;</button>
+            </div>
+
+            <!-- Cuerpo -->
+            <div class="modal-validar-body">
+
+                <!-- Textarea comentario -->
+                <textarea id="validarComentario"
+                          class="validar-textarea"
+                          placeholder="Escribe el comentario..."></textarea>
+
+                <!-- Carrusel de imágenes -->
+                <div class="evidencia-carousel">
+                    <button class="carousel-arrow left" onclick="prevImagen()">&#10094;</button>
+                    <div class="carousel-img-wrapper">
+                        <img id="carouselImg" src="" alt="Evidencia">
+                        <div class="carousel-empty" id="carouselEmpty">Sin evidencia cargada</div>
+                    </div>
+                    <button class="carousel-arrow right" onclick="nextImagen()">&#10095;</button>
+                </div>
+
+                <!-- Input oculto para subir imágenes -->
+                <input type="file"
+                       id="inputImagen"
+                       accept="image/*"
+                       multiple
+                       style="display:none"
+                       onchange="cargarImagenes(event)">
+
+                <!-- Botón agregar imagen -->
+                <button class="btn-add-img" onclick="document.getElementById('inputImagen').click()">
+                    + Agregar imagen
+                </button>
+
+                <!-- Botón confirmar -->
+                <div class="modal-validar-actions">
+                    <button class="btn-validar-confirmar" onclick="confirmarValidacion()">Validar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="Dashauditorias.js"></script>
+</body>
+</html>

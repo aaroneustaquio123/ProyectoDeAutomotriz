@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styledetalleauditoria.css">
+    <link rel="icon" type="image/png" href="../LogoSummas.png"> 
 </head>
 <body>
     <header>
@@ -90,15 +91,11 @@
                             <th class="col-pct">%</th>
                         </tr>
                     </thead>
-                    <tbody id="resultsTableBody">
-                        <!-- Filas dinámicas -->
-                    </tbody>
+                    <tbody id="resultsTableBody"></tbody>
                 </table>
             </div>
 
-            <div class="results-total" id="resultsTotal">
-                <!-- Total dinámico -->
-            </div>
+            <div class="results-total" id="resultsTotal"></div>
         </div>
 
         <div class="results-actions">
@@ -131,6 +128,9 @@
             <div class="modal-sm-body">
                 <textarea id="comoValidoText" class="modal-textarea" placeholder="Describa cómo se validó este punto..."></textarea>
             </div>
+            <div class="modal-sm-logo">
+                <img src="../LogoSummas.png" alt="Summas Consultoría">
+            </div>
             <div class="modal-sm-footer">
                 <button class="btn-modal-cancel" id="cancelComoValido">Cancelar</button>
                 <button class="btn-modal-save" id="saveComoValido">Guardar</button>
@@ -155,24 +155,29 @@
         </div>
     </div>
 
-    <!-- Modal Evidencia -->
+    <!-- Modal Evidencia — CARRUSEL 3 SLOTS -->
     <div id="evidenciaModal" class="modal-overlay">
-        <div class="modal-sm">
+        <div class="modal-sm modal-evidencia-sm">
             <div class="modal-sm-header">
                 <h3>Evidencia</h3>
                 <span class="modal-close" id="closeEvidencia">&times;</span>
             </div>
-            <div class="modal-sm-body">
-                <div class="upload-area" id="uploadArea">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#1D3579" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                        <polyline points="17 8 12 3 7 8"></polyline>
-                        <line x1="12" y1="3" x2="12" y2="15"></line>
-                    </svg>
-                    <p>Arrastra archivos aquí o <span class="upload-link">selecciona</span></p>
-                    <input type="file" id="evidenciaFile" multiple hidden accept="image/*,.pdf">
+            <div class="modal-sm-body evidencia-body">
+                <!-- Carrusel con flechas -->
+                <div class="ev-carousel-wrapper">
+                    <button class="ev-nav-btn ev-prev" id="evPrev">&#8249;</button>
+                    <div class="ev-slot-container" id="evSlotContainer">
+                        <!-- Renderizado por JS -->
+                    </div>
+                    <button class="ev-nav-btn ev-next" id="evNext">&#8250;</button>
                 </div>
-                <div class="uploaded-files" id="uploadedFiles"></div>
+                <!-- Indicadores de puntos -->
+                <div class="ev-dots" id="evDots">
+                    <span class="ev-dot active" data-idx="0"></span>
+                    <span class="ev-dot" data-idx="1"></span>
+                    <span class="ev-dot" data-idx="2"></span>
+                </div>
+                <input type="file" id="evidenciaFile" hidden accept="image/*,.pdf">
             </div>
             <div class="modal-sm-footer">
                 <button class="btn-modal-cancel" id="cancelEvidencia">Cancelar</button>
@@ -190,12 +195,12 @@
             </div>
             <div class="modal-sm-body">
                 <div class="plan-field">
-                    <label>Descripción de la acción</label>
-                    <textarea id="planDescripcion" class="modal-textarea" placeholder="Describa la acción correctiva..."></textarea>
-                </div>
-                <div class="plan-field">
                     <label>Responsable</label>
                     <input type="text" id="planResponsable" class="modal-input" placeholder="Nombre del responsable">
+                </div>
+                <div class="plan-field">
+                    <label>Descripción de la acción</label>
+                    <textarea id="planDescripcion" class="modal-textarea" placeholder="Describa la acción correctiva..."></textarea>
                 </div>
                 <div class="plan-field">
                     <label>Fecha límite</label>
@@ -208,7 +213,6 @@
             </div>
         </div>
     </div>
-
     <script src="scriptdetalleauditoria.js"></script>
 </body>
 </html>

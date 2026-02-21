@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summas - Agregar Pregunta</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styleagregarpregunta.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="../LogoSummas.png" alt="Summas Consultoría">
+        </div>
+        <nav>
+            <a href="../dash/dashboard.html">Dashboard</a>
+            <a href="../au/auditorias.html">Auditorías</a>
+            <a href="plantillas.html" class="active">Plantillas</a>
+            <a href="../em/empresa.html">Empresas</a>
+        </nav>
+        <div class="user-icon" id="userIconBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+        </div>
+    </header>
+
+    <div class="content">
+        <a href="javascript:history.back()" class="btn-volver">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            Volver
+        </a>
+
+        <h1 class="page-title">Agregar Pregunta</h1>
+
+        <div class="form-card">
+
+            <div class="form-group">
+                <label>¿Qué evaluar?</label>
+                <input type="text" class="form-control" id="inputQueEvaluar" placeholder="Escribe la pregunta...">
+            </div>
+
+            <div class="form-group">
+                <label>¿Cómo evaluar?</label>
+                <input type="text" class="form-control" id="inputComoEvaluar" placeholder="Escribe la descripción...">
+            </div>
+
+            <div class="form-group form-group-peso">
+                <label>Peso</label>
+                <input type="number" class="form-control input-peso" id="inputPeso" value="3" min="0" max="100">
+            </div>
+
+            <div class="form-group">
+                <label>¿Qué tipo de métrica utilizar?</label>
+                <div class="metrica-wrapper">
+
+                    <!-- Fila 1: Rango + intervalos + boton agregar -->
+                    <div class="metrica-fila">
+                        <div class="select-wrapper">
+                            <select class="form-control select-metrica" id="selectMetrica">
+                                <option value="rango">Rango</option>
+                                <option value="sino">Sí / No</option>
+                                <option value="numero">Número</option>
+                                <option value="texto">Texto</option>
+                            </select>
+                            <span class="select-dot" id="dotRango"></span>
+                        </div>
+
+                        <!-- Intervalos: solo visibles cuando Rango está activo -->
+                        <div class="intervalos-row" id="intervalosRow">
+                            <!-- Se llena dinámicamente -->
+                        </div>
+
+                        <!-- Botón agregar: solo visible cuando Rango está activo -->
+                        <button class="btn-agregar-intervalo" id="btnAgregarIntervalo">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="12" fill="#1D3579"/>
+                                <line x1="12" y1="6" x2="12" y2="18" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                                <line x1="6" y1="12" x2="18" y2="12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                            </svg>
+                            Agregar Intervalo
+                        </button>
+                    </div>
+
+                    <!-- Fila 2: Sí/No (oculta si se selecciona Rango) -->
+                    <div class="metrica-fila" id="filaSino" style="display:none;">
+                        <div class="select-wrapper">
+                            <select class="form-control select-metrica" id="selectSino">
+                                <option value="sino">Sí / No</option>
+                                <option value="rango">Rango</option>
+                                <option value="numero">Número</option>
+                            </select>
+                            <span class="select-dot"></span>
+                        </div>
+                        <div class="intervalos-row" id="opcionesRow">
+                            <!-- Se llena dinámicamente -->
+                        </div>
+                        <button class="btn-agregar-intervalo btn-sino" id="btnAgregarSino">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="12" fill="white"/>
+                                <line x1="12" y1="6" x2="12" y2="18" stroke="#FF0000" stroke-width="2.5" stroke-linecap="round"/>
+                                <line x1="6" y1="12" x2="18" y2="12" stroke="#FF0000" stroke-width="2.5" stroke-linecap="round"/>
+                            </svg>
+                            Agregar Opciones
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="bottom-actions">
+                <button class="btn-cancelar" id="btnCancelar">Cancelar</button>
+                <button class="btn-crear-pregunta" id="btnCrearPregunta">Crear Pregunta</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================
+         MODAL: NUEVO INTERVALO
+    ======================== -->
+    <div id="modalIntervalo" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>Nuevo Intervalo</h2>
+                <span class="close-modal" id="closeIntervalo">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label id="labelIntervalo">Intervalo 1</label>
+                    <div class="intervalo-inputs-row">
+                        <select class="form-control select-pct" id="inputDesde"></select>
+                        <span class="intervalo-sep">-</span>
+                        <select class="form-control select-pct" id="inputHasta"></select>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top:20px;">
+                    <label>Puntaje del intervalo</label>
+                    <select class="form-control" id="inputValor">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <div class="modal-actions-center">
+                    <button class="btn-crear-pregunta btn-ancho" id="btnConfirmarIntervalo">Crear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================
+         MODAL: ACCION COMPLETADA
+    ======================== -->
+    <div id="modalCompletado" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>Acción completada</h2>
+                <span class="close-modal" id="closeCompletado">&times;</span>
+            </div>
+            <div class="modal-body modal-completado-body">
+                <p class="completado-texto">Los cambios se realizaron correctamente. Ya puedes cerrar esta ventana.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================
+         MODAL: PERFIL
+    ======================== -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Perfil de Usuario</h2>
+                <span class="close-modal" id="closeProfileModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="profile-avatar">
+                    <div class="avatar-circle">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#1D3579">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                    </div>
+                    <button class="btn-change-photo">Cambiar foto</button>
+                </div>
+                <div class="profile-info">
+                    <div class="info-row">
+                        <div class="info-group">
+                            <label>Nombre completo</label>
+                            <input type="text" value="Juan Pérez" readonly>
+                        </div>
+                        <div class="info-group">
+                            <label>Email</label>
+                            <input type="email" value="juan.perez@summas.com" readonly>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-group">
+                            <label>Cargo</label>
+                            <input type="text" value="Auditor Senior" readonly>
+                        </div>
+                        <div class="info-group">
+                            <label>Departamento</label>
+                            <input type="text" value="Control de Calidad" readonly>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-group">
+                            <label>Teléfono</label>
+                            <input type="tel" value="+51 999 888 777" readonly>
+                        </div>
+                        <div class="info-group">
+                            <label>Fecha de ingreso</label>
+                            <input type="text" value="15/03/2023" readonly>
+                        </div>
+                    </div>
+                    <div class="info-row single">
+                        <div class="info-group full-width">
+                            <label>Permisos</label>
+                            <div class="permissions-tags">
+                                <span class="tag">Administrador</span>
+                                <span class="tag">Auditorías</span>
+                                <span class="tag">Reportes</span>
+                                <span class="tag">Gestión de Usuarios</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-secondary" id="btnEditProfile">Editar Perfil</button>
+                    <button class="btn-primary" id="btnChangePassword">Cambiar Contraseña</button>
+                    <button class="btn-danger" id="btnLogout">Cerrar Sesión</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scriptagregarpregunta.js"></script>
+</body>
+</html>

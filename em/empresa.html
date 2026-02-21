@@ -19,7 +19,7 @@
 
     <nav>
         <a href="../dash/dashboard.html">Dashboard</a>
-        <a href="../aud/auditorias.html">Auditorías</a>
+        <a href="../au/auditorias.html">Auditorías</a>
         <a href="../plan/plantillas.html">Plantillas</a>
         <a href="../em/empresa.html" class="active">Empresas</a>
     </nav>
@@ -31,8 +31,11 @@
     </div>
 </header>
 
-<!-- CONTENIDO PRINCIPAL -->
-<div class="content">
+
+<!-- ══════════════════════════════
+     VISTA 1: LISTA DE EMPRESAS
+══════════════════════════════ -->
+<div class="content" id="vistaLista">
 
     <div class="top-bar">
         <div class="page-title">
@@ -53,11 +56,109 @@
     <div class="empresas-grid" id="empresasGrid"></div>
 </div>
 
-<!-- MODAL Nueva Empresa -->
+
+<!-- ══════════════════════════════
+     VISTA 2: DETALLE DE EMPRESA
+══════════════════════════════ -->
+<div class="content" id="vistaDetalle" style="display:none;">
+
+    <a class="back-link" id="btnVolver">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+             fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Volver
+    </a>
+
+    <h1 class="detalle-page-title" id="detalleTitulo">—</h1>
+
+    <!-- MARCAS -->
+    <div class="detalle-section" id="seccionMarcas">
+        <div class="detalle-section-header">
+            <span class="detalle-section-title">Marcas</span>
+            <div class="detalle-section-controls">
+                <div class="search-inline">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+                         fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" placeholder="Buscar por nombre" oninput="filterDetalleTags('marcasContainer', this.value)">
+                </div>
+                <button class="btn-agregar-detalle" onclick="agregarTagDetalle('marcasContainer')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+                         fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    + Agregar
+                </button>
+            </div>
+        </div>
+        <div class="detalle-tags-container" id="marcasContainer"></div>
+    </div>
+
+    <!-- CONCESIONARIOS -->
+    <div class="detalle-section" id="seccionConcesionarios">
+        <div class="detalle-section-header">
+            <span class="detalle-section-title">Concesionarios</span>
+            <div class="detalle-section-controls">
+                <div class="search-inline">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+                         fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" placeholder="Buscar por nombre" oninput="filterDetalleTags('concesionariosContainer', this.value)">
+                </div>
+                <button class="btn-agregar-detalle" onclick="agregarTagDetalle('concesionariosContainer')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+                         fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    + Agregar
+                </button>
+            </div>
+        </div>
+        <div class="detalle-tags-container" id="concesionariosContainer"></div>
+    </div>
+
+    <!-- LOCALES -->
+    <div class="detalle-section">
+        <div class="detalle-section-header">
+            <span class="detalle-section-title">Locales</span>
+            <div class="detalle-section-controls">
+                <div class="search-inline">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+                         fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" placeholder="Buscar por nombre" oninput="filterDetalleTags('localesContainer', this.value)">
+                </div>
+                <button class="btn-agregar-detalle" onclick="agregarTagDetalle('localesContainer')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+                         fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    + Agregar
+                </button>
+            </div>
+        </div>
+        <div class="detalle-tags-container" id="localesContainer"></div>
+    </div>
+
+</div>
+
+<!-- ══════════════════════════════
+     MODAL Nueva Empresa (paso 1)
+══════════════════════════════ -->
 <div id="modalNueva" class="modal">
     <div class="modal-content modal-nueva">
         <div class="modal-nueva-bar"></div>
-        <div class="modal-header">
+        <div class="modal-detalle-form-header">
             <h2>Nueva Empresa</h2>
             <span class="close-modal" id="closeNueva">&times;</span>
         </div>
@@ -84,17 +185,19 @@
                     </select>
                 </div>
                 <div class="form-actions">
-                    <button type="submit" class="btn-siguiente">Siguiente</button>
+                    <button type="submit" class="btn-eliminar-item">Crear y continuar</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-<!-- MODAL Estructura Empresa (paso 2) -->
+<!-- ══════════════════════════════
+     MODAL Estructura Empresa (paso 2)
+══════════════════════════════ -->
 <div id="modalEstructura" class="modal">
     <div class="modal-content modal-nueva">
-        <div class="modal-header">
+        <div class="modal-detalle-form-header">
             <h2>Nueva Empresa</h2>
             <span class="close-modal" id="closeEstructura">&times;</span>
         </div>
@@ -114,139 +217,397 @@
                 <label class="radio-option">
                     <input type="radio" name="estructura" value="operadores">
                     <span class="radio-custom"></span>
-                    No, también tiene operadores
+                    No, también tiene concesionaria
                 </label>
                 <label class="radio-option">
                     <input type="radio" name="estructura" value="marcas_operadores">
                     <span class="radio-custom"></span>
-                    No, también tiene marcas y operadores
+                    No, también tiene marcas y concesionaria
                 </label>
             </div>
             <div class="form-actions">
-                <button class="btn-crear" id="btnCrearEmpresa">Crear</button>
+                <button class="btn-eliminar-item" id="btnCrearEmpresa">Continuar creación</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- MODAL Agregar Marca (paso 3) -->
+<!-- ══════════════════════════════
+     MODAL Agregar Marca (desde detalle)
+══════════════════════════════ -->
+<div id="modalAgregarMarca" class="modal">
+    <div class="modal-content modal-detalle-form">
+        <div class="modal-detalle-form-header">
+            <h2>Agregar Marca</h2>
+            <span class="close-modal" id="closeAgregarMarca">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="inputNuevaMarca">Nombre de la Marca</label>
+                <input type="text" id="inputNuevaMarca" class="form-input" placeholder="Marca1">
+            </div>
+            <div class="form-actions">
+                <button class="btn-crear" id="btnCrearMarca">Crear Marca</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════
+     MODAL Agregar Concesionario (desde detalle)
+══════════════════════════════ -->
+<div id="modalAgregarConcesionario" class="modal">
+    <div class="modal-content modal-detalle-form">
+        <div class="modal-detalle-form-header">
+            <h2>Agregar Concesionario</h2>
+            <span class="close-modal" id="closeAgregarConcesionario">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="inputNuevoConcesionario">Nombre del concesionario</label>
+                <input type="text" id="inputNuevoConcesionario" class="form-input" placeholder="Concesionario1">
+            </div>
+            <div class="form-group">
+                <label for="selectMarcaConcesionario">Marca</label>
+                <select id="selectMarcaConcesionario" class="form-input form-select">
+                    <option value="" disabled selected>Seleccionar marca</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button class="btn-crear" id="btnCrearConcesionario">Crear Concesionario</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════
+     MODAL Agregar Local (desde detalle)
+══════════════════════════════ -->
+<div id="modalAgregarLocal" class="modal">
+    <div class="modal-content modal-detalle-form modal-local-wide">
+        <div class="modal-detalle-form-header">
+            <h2>Agregar Local</h2>
+            <span class="close-modal" id="closeAgregarLocal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="local-row">
+                <div class="form-group">
+                    <label for="inputLocalNombre">Nombre</label>
+                    <input type="text" id="inputLocalNombre" class="form-input" placeholder="La Molina">
+                </div>
+                <div class="form-group">
+                    <label for="selectLocalMarca">Marca</label>
+                    <select id="selectLocalMarca" class="form-input form-select">
+                        <option value="" disabled selected>Seleccionar marca</option>
+                    </select>
+                </div>
+            </div>
+            <div class="local-row">
+                <div class="form-group">
+                    <label for="selectLocalConcesionario">Concesionarios</label>
+                    <select id="selectLocalConcesionario" class="form-input form-select">
+                        <option value="" disabled selected>Seleccionar concesionario</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="inputLocalDireccion">Dirección</label>
+                    <input type="text" id="inputLocalDireccion" class="form-input" placeholder="Av. Los Pinos 123...">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Operaciones</label>
+                <div class="operaciones-container" id="operacionesContainer">
+                    <span class="op-add-btn" id="btnAddOp">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+                             fill="none" stroke="#1D3579" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Ingresar operación
+                    </span>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn-crear" id="btnCrearLocal">Crear Local</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════
+     MODAL Agregar Marca (paso 3 — flujo nueva empresa)
+══════════════════════════════ -->
 <div id="modalMarca" class="modal">
     <div class="modal-content modal-nueva">
-        <div class="modal-header">
-            <h2>Agregar Marca</h2>
+        <div class="modal-detalle-form-header">
+            <h2>Nueva Marca</h2>
             <span class="close-modal" id="closeMarca">&times;</span>
         </div>
         <div class="modal-body">
             <div class="form-group">
-                <label for="inputMarca">Nombre</label>
-                <input type="text" id="inputMarca" class="form-input" placeholder="">
+                <label for="inputMarca">Nombre de la Marca</label>
+                <input type="text" id="inputMarca" class="form-input" placeholder="Marca1">
             </div>
             <div class="form-actions">
-                <button class="btn-crear" id="btnAgregarMarca">Agregar</button>
+                <button class="btn-crear" id="btnAgregarMarca">Crear Marca</button>
+            </div>
+
+            <div id="marcasFlujoContainer" style="display:none; flex-wrap:wrap; gap:8px; border:1.5px solid #D1D5DB; border-radius:12px; padding:16px 18px; margin-top:16px; background:white; min-height:52px; align-items:center;">
+                <div id="marcasFlujoTags" style="display:flex; flex-wrap:wrap; gap:8px; width:100%;"></div>
+            </div>
+
+            <div style="display:flex; justify-content:center; margin-top:16px;">
+                <button class="btn-finalizar-sede" id="btnContinuarMarcas" style="display:none;">
+                    Continuar creación
+                </button>
             </div>
         </div>
     </div>
 </div>
-
-<!-- MODAL Agregar Operador (paso 4) -->
+<!-- ══════════════════════════════
+     MODAL Agregar Operador (paso 4)
+══════════════════════════════ -->
 <div id="modalOperador" class="modal">
     <div class="modal-content modal-nueva">
-        <div class="modal-header">
-            <h2>Agregar Operador</h2>
+        <div class="modal-detalle-form-header">
+            <h2>Nueva Concesionario</h2>
             <span class="close-modal" id="closeOperador">&times;</span>
         </div>
         <div class="modal-body">
             <div class="form-group">
-                <label for="inputOperador">Nombre</label>
-                <input type="text" id="inputOperador" class="form-input" placeholder="">
+                <label for="inputOperador">Nombre del concesionario</label>
+                <input type="text" id="inputOperador" class="form-input" placeholder="Concesionario1">
+            </div>
+            <div class="form-group">
+                <label for="selectOperadorMarca">Marca</label>
+                <select id="selectOperadorMarca" class="form-input form-select">
+                    <option value="" disabled selected>Seleccionar marca</option>
+                </select>
             </div>
             <div class="form-actions">
-                <button class="btn-crear" id="btnAgregarOperador">Agregar</button>
+                <button class="btn-crear" id="btnAgregarOperador">Crear Marca</button>
+            </div>
+
+            <div id="operadoresFlujoContainer" style="display:none; flex-wrap:wrap; gap:8px; border:1.5px solid #D1D5DB; border-radius:12px; padding:16px 18px; margin-top:16px; background:white; min-height:52px; align-items:center;">
+                <div id="operadoresFlujoTags" style="display:flex; flex-wrap:wrap; gap:8px; width:100%;"></div>
+            </div>
+
+            <div style="display:flex; justify-content:center; margin-top:16px;">
+                <button class="btn-finalizar-sede" id="btnContinuarOperadores" style="display:none;">
+                    Continuar creación
+                </button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- MODAL Nueva Sede (paso 5) -->
+<!-- ══════════════════════════════
+     MODAL Nueva Sede (paso 5) — DISEÑO NUEVO
+══════════════════════════════ -->
 <div id="modalSede" class="modal">
-    <div class="modal-content modal-sede">
-        <div class="modal-header">
-            <h2>Nueva Sede</h2>
+    <div class="modal-content modal-sede-nuevo">
+        <div class="modal-detalle-form-header">
+            <h2>Nuevo Local</h2>
             <span class="close-modal" id="closeSede">&times;</span>
         </div>
-        <div class="modal-body">
-            <div class="sede-row">
-                <div class="form-group">
-                    <label for="inputConcesionario">Concesionario</label>
-                    <select id="inputConcesionario" class="form-input form-select">
-                        <option value="">Selecciona</option>
-                        <option value="Grupo Pana">Grupo Pana</option>
-                        <option value="Otro">Otro</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="inputSede">Sede</label>
-                    <input type="text" id="inputSede" class="form-input" placeholder="Ej. La Molina">
-                </div>
+        <div class="modal-body modal-sede-body">
+            <div class="form-group">
+                <label for="inputSede">Nombre</label>
+                <input type="text" id="inputSede" class="form-input" placeholder="La Molina">
             </div>
             <div class="form-group">
                 <label for="inputDireccion">Dirección</label>
-                <input type="text" id="inputDireccion" class="form-input" placeholder="Ej. Av. La Molina">
+                <input type="text" id="inputDireccion" class="form-input" placeholder="Ingresar dirección">
             </div>
             <div class="form-group">
-                <label>Área</label>
-                <div class="area-container" id="areaContainer">
-                    <span class="area-tag selected" data-area="Ventas">Ventas</span>
-                    <span class="area-tag" data-area="Servicios">Servicios</span>
-                    <span class="area-tag" data-area="Seminuevo">Seminuevo</span>
-                    <span class="area-tag" data-area="Repuestos">Repuestos</span>
-                    <span class="area-tag" data-area="P&P">P&P</span>
-                    <span class="area-tag add-area-tag" id="btnAddArea">+ Agregar</span>
-                </div>
+                <label>Operaciones</label>
+                <div class="operaciones-sede-container" id="areaContainer2"></div>
             </div>
-            <div class="form-actions">
-                <button class="btn-crear" id="btnCrearSede">Crear</button>
+
+            <div class="sede-crear-actions">
+                <button class="btn-crear-local-sede" id="btnCrearSede">Crear Local</button>
+            </div>
+
+            <div id="localesCreadosContainer" style="display:none;">
+                <div class="locales-creados-box" id="localesCreadosTags"></div>
+            </div>
+
+            <div class="sede-finalizar-actions">
+                <button class="btn-finalizar-sede" id="btnFinalizarCreacion" style="display:none;">
+                    Finalizar creación
+                </button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- MODAL Detalle Empresa -->
-<div id="modalDetalle" class="modal">
-    <div class="modal-content modal-detalle">
-        <div class="detalle-bar"></div>
-        <div class="modal-header">
-            <h2>Detalle</h2>
-            <span class="close-modal" id="closeDetalle">&times;</span>
+<!-- ══════════════════════════════
+     MODAL Editar Marca
+══════════════════════════════ -->
+<div id="modalEditarMarca" class="modal">
+    <div class="modal-content modal-detalle-form">
+        <div class="modal-detalle-form-header">
+            <h2>Editar Marca</h2>
+            <span class="close-modal" id="closeEditarMarca">&times;</span>
         </div>
         <div class="modal-body">
-            <div class="detalle-avatar-row">
-                <div class="detalle-avatar-lg" id="dAvatar">—</div>
-                <div>
-                    <div class="detalle-nombre" id="dNombre">—</div>
-                    <div class="detalle-sector" id="dSector">—</div>
+            <div class="form-group">
+                <label for="inputEditarMarca">Nombre de la Marca</label>
+                <input type="text" id="inputEditarMarca" class="form-input" placeholder="Marca1">
+            </div>
+            <div class="form-actions" style="gap: 12px; justify-content: center; display: flex;">
+                <button class="btn-eliminar-item" id="btnEliminarMarcaEditar">Eliminar</button>
+                <button class="btn-actualizar-item" id="btnActualizarMarca">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════
+     MODAL Confirmar Eliminación Marca
+══════════════════════════════ -->
+<div id="modalConfirmarEliminarMarca" class="modal">
+    <div class="modal-content modal-confirmar">
+        <div class="modal-confirmar-header">
+            <h2>Eliminar Marca</h2>
+            <span class="close-modal" id="closeConfirmarEliminarMarca">&times;</span>
+        </div>
+        <div class="modal-body modal-confirmar-body">
+            <p class="confirmar-titulo">¿Esta seguro de eliminar esta Marca?</p>
+            <p class="confirmar-desc">Recuerda que se eliminarán todos los campos derivados de esta marca, incluyendo los concesionarios o locales asociados a esta.</p>
+            <div class="form-actions confirmar-actions">
+                <button class="btn-si-eliminar" id="btnSiEliminarMarca">Sí</button>
+                <button class="btn-no-eliminar" id="btnNoEliminarMarca">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════
+     MODAL Editar Concesionario
+══════════════════════════════ -->
+<div id="modalEditarConcesionario" class="modal">
+    <div class="modal-content modal-detalle-form">
+        <div class="modal-detalle-form-header">
+            <h2>Editar Concesionario</h2>
+            <span class="close-modal" id="closeEditarConcesionario">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="inputEditarConcesionario">Nombre del concesionario</label>
+                <input type="text" id="inputEditarConcesionario" class="form-input" placeholder="Concesionario1">
+            </div>
+            <div class="form-group">
+                <label for="selectEditarMarcaConcesionario">Marca</label>
+                <select id="selectEditarMarcaConcesionario" class="form-input form-select">
+                    <option value="" disabled selected>Seleccionar marca</option>
+                </select>
+            </div>
+            <div class="form-actions" style="gap: 12px; justify-content: center; display: flex;">
+                <button class="btn-eliminar-item" id="btnEliminarConcesionarioEditar">Eliminar</button>
+                <button class="btn-actualizar-item" id="btnActualizarConcesionario">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════
+     MODAL Confirmar Eliminación Concesionario
+══════════════════════════════ -->
+<div id="modalConfirmarEliminarConcesionario" class="modal">
+    <div class="modal-content modal-confirmar">
+        <div class="modal-confirmar-header">
+            <h2>Eliminar Concesionario</h2>
+            <span class="close-modal" id="closeConfirmarEliminarConcesionario">&times;</span>
+        </div>
+        <div class="modal-body modal-confirmar-body">
+            <p class="confirmar-titulo">¿Esta seguro de eliminar este Concesionario?</p>
+            <p class="confirmar-desc">Recuerda que se eliminarán todos los campos derivados de este Concesionario, incluyendo los locales asociados a este.</p>
+            <div class="form-actions confirmar-actions">
+                <button class="btn-si-eliminar" id="btnSiEliminarConcesionario">Sí</button>
+                <button class="btn-no-eliminar" id="btnNoEliminarConcesionario">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════
+     MODAL Editar Local
+══════════════════════════════ -->
+<div id="modalEditarLocal" class="modal">
+    <div class="modal-content modal-detalle-form modal-local-wide">
+        <div class="modal-detalle-form-header">
+            <h2>Editar Local</h2>
+            <span class="close-modal" id="closeEditarLocal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="local-row">
+                <div class="form-group">
+                    <label for="inputEditarLocalNombre">Nombre</label>
+                    <input type="text" id="inputEditarLocalNombre" class="form-input" placeholder="La Molina">
+                </div>
+                <div class="form-group">
+                    <label for="selectEditarLocalMarca">Marca</label>
+                    <select id="selectEditarLocalMarca" class="form-input form-select">
+                        <option value="" disabled selected>Seleccionar marca</option>
+                    </select>
                 </div>
             </div>
-            <div class="detalle-row">
-                <span class="detalle-label">Locales</span>
-                <span class="detalle-value" id="dLocales">—</span>
+            <div class="local-row">
+                <div class="form-group">
+                    <label for="selectEditarLocalConcesionario">Concesionarios</label>
+                    <select id="selectEditarLocalConcesionario" class="form-input form-select">
+                        <option value="" disabled selected>Seleccionar concesionario</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="inputEditarLocalDireccion">Dirección</label>
+                    <input type="text" id="inputEditarLocalDireccion" class="form-input" placeholder="Av. Los Pinos 123...">
+                </div>
             </div>
-            <div class="detalle-row">
-                <span class="detalle-label">Auditorías realizadas</span>
-                <span class="detalle-value" id="dAuditorias">—</span>
+            <div class="form-group">
+                <label>Operaciones</label>
+                <div class="operaciones-container" id="operacionesEditarContainer"></div>
             </div>
-            <div class="detalle-row">
-                <span class="detalle-label">Contacto</span>
-                <span class="detalle-value" id="dContacto">—</span>
+            <div class="form-actions" style="gap: 12px; justify-content: center; display: flex;">
+                <button class="btn-eliminar-item" id="btnEliminarLocalEditar">Eliminar</button>
+                <button class="btn-actualizar-item" id="btnActualizarLocal">Actualizar</button>
             </div>
-            <div class="detalle-row">
-                <span class="detalle-label">Estado</span>
-                <span class="detalle-value" id="dEstado">—</span>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════
+     MODAL Confirmar Eliminación Local
+══════════════════════════════ -->
+<div id="modalConfirmarEliminarLocal" class="modal">
+    <div class="modal-content modal-confirmar">
+        <div class="modal-confirmar-header">
+            <h2>Eliminar Local</h2>
+            <span class="close-modal" id="closeConfirmarEliminarLocal">&times;</span>
+        </div>
+        <div class="modal-body modal-confirmar-body">
+            <p class="confirmar-titulo">¿Esta seguro de eliminar este Local?</p>
+            <p class="confirmar-desc">Recuerda que se eliminarán todos los campos derivados de este Local, incluyendo las operaciones asociadas a este.</p>
+            <div class="form-actions confirmar-actions">
+                <button class="btn-si-eliminar" id="btnSiEliminarLocal">Sí</button>
+                <button class="btn-no-eliminar" id="btnNoEliminarLocal">No</button>
             </div>
-            <div class="detalle-actions">
-                <button class="btn-sec" id="btnEliminar">Eliminar</button>
-                <button class="btn-prim">Ver Auditorías</button>
-            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════
+     MODAL Acción Completada
+══════════════════════════════ -->
+<div id="modalAccionCompletada" class="modal">
+    <div class="modal-content modal-confirmar">
+        <div class="modal-confirmar-header">
+            <h2>Acción completada</h2>
+            <span class="close-modal" id="closeAccionCompletada">&times;</span>
+        </div>
+        <div class="modal-body modal-confirmar-body">
+<p class="accion-completada-msg" id="accionCompletadaMsg">Los cambios se realizaron correctamente. Ya puedes cerrar esta ventana</p>
         </div>
     </div>
 </div>

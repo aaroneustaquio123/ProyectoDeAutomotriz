@@ -122,186 +122,10 @@ nav a.active::after {
 }
 
 /* =====================
-   FORMULARIO
-===================== */
-.form-section {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    margin-bottom: 35px;
-}
-
-.form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-}
-
-.form-row.single {
-    grid-template-columns: 1fr;
-    max-width: 50%;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.form-group label {
-    font-size: 13px;
-    font-weight: 500;
-    color: #555;
-}
-
-.form-control {
-    width: 100%;
-    padding: 11px 15px;
-    border: 1.5px solid #ddd;
-    border-radius: 8px;
-    font-size: 14px;
-    font-family: 'Inter', sans-serif;
-    color: #333;
-    background-color: white;
-    transition: border-color 0.3s ease;
-    appearance: none;
-}
-
-.form-control:focus {
-    outline: none;
-    border-color: #1D3579;
-    box-shadow: 0 0 0 3px rgba(29, 53, 121, 0.08);
-}
-
-.form-control:hover { border-color: #1D3579; }
-
-select.form-control {
-    cursor: pointer;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%231D3579' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    padding-right: 35px;
-}
-
-/* =====================
-   PORCENTAJE CUMPLIMIENTO
-===================== */
-.cumplimiento-wrapper { margin-top: 5px; }
-
-.cumplimiento-bar {
-    display: inline-flex;
-    align-items: center;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1.5px solid #ddd;
-    max-width: 520px;
-}
-
-.cumplimiento-label {
-    background: linear-gradient(90deg, #1D3579 0%, #1E387B 13%, #48BED7 100%);
-    color: white;
-    font-size: 14px;
-    font-weight: 600;
-    padding: 13px 22px;
-    white-space: nowrap;
-}
-
-.cumplimiento-input-group {
-    display: flex;
-    align-items: center;
-    background: white;
-    padding: 0 15px;
-    gap: 6px;
-    flex: 1;
-}
-
-.cumplimiento-input {
-    border: none;
-    outline: none;
-    font-size: 14px;
-    font-family: 'Inter', sans-serif;
-    color: #333;
-    width: 120px;
-    padding: 13px 0;
-    background: transparent;
-}
-
-.cumplimiento-input::placeholder { color: #aaa; }
-
-.cumplimiento-percent {
-    font-size: 15px;
-    font-weight: 700;
-    color: #1D3579;
-}
-
-/* =====================
    CRITERIOS
 ===================== */
-.criterios-section { margin-bottom: 40px; }
 
-.criterios-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 18px;
-}
 
-.criterios-title {
-    font-size: 22px;
-    font-weight: 700;
-    color: #1D3579;
-}
-
-.criterios-actions {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-}
-
-/* Botón Editar - rojo */
-.btn-editar-criterio {
-    background: linear-gradient(90deg, #FF0000 0%, #EF0A0A 13%, #931212 82%);
-    border: none;
-    border-radius: 25px;
-    color: white;
-    font-size: 15px;
-    font-weight: 600;
-    font-family: 'Inter', sans-serif;
-    padding: 11px 35px;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
-    box-shadow: 0 2px 8px rgba(255, 0, 0, 0.3);
-}
-
-.btn-editar-criterio:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 14px rgba(147, 18, 18, 0.45);
-}
-
-/* Botón Agregar Criterio - azul teal */
-.btn-agregar-criterio {
-    background: linear-gradient(90deg, #1D3579 0%, #1E387B 13%, #48BED7 100%);
-    border: none;
-    border-radius: 25px;
-    color: white;
-    font-size: 15px;
-    font-weight: 600;
-    font-family: 'Inter', sans-serif;
-    padding: 11px 25px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
-    box-shadow: 0 2px 8px rgba(29, 53, 121, 0.35);
-}
-
-.btn-agregar-criterio:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 14px rgba(72, 190, 215, 0.45);
-}
-
-/* Lista criterios */
 .criterios-list {
     display: flex;
     flex-direction: column;
@@ -316,7 +140,7 @@ select.form-control {
     border-radius: 12px;
     background: linear-gradient(90deg, #1D3579 0%, #1E387B 13%, #48BED7 100%);
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;    
 }
 
 .criterio-item:hover {
@@ -346,26 +170,26 @@ select.form-control {
     margin-top: 10px;
 }
 
-.btn-cancelar {
-    background: white;
-    border: 2px solid #1D3579;
+.btn-editar {
+    background: linear-gradient(90deg, #FF0000 0%, #EF0A0A 13%, #931212 82%);
+    border: none;
     border-radius: 25px;
-    color: #1D3579;
+    color: white;
     font-size: 15px;
     font-weight: 600;
     font-family: 'Inter', sans-serif;
-    padding: 13px 50px;
+    padding: 11px 35px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    min-width: 160px;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 8px rgba(255, 0, 0, 0.3);
 }
 
-.btn-cancelar:hover {
-    background: #1D3579;
-    color: white;
+.btn-editar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(147, 18, 18, 0.45);
 }
 
-.btn-guardar-plantilla {
+.btn-agregar {
     background: linear-gradient(90deg, #1D3579 0%, #1E387B 13%, #48BED7 100%);
     border: none;
     border-radius: 25px;
@@ -373,18 +197,16 @@ select.form-control {
     font-size: 15px;
     font-weight: 600;
     font-family: 'Inter', sans-serif;
-    padding: 13px 40px;
+    padding: 11px 25px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     transition: transform 0.2s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 8px rgba(29, 53, 121, 0.35);
-    min-width: 200px;
-    justify-content: center;
 }
 
-.btn-guardar-plantilla:hover {
+.btn-agregar:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 14px rgba(72, 190, 215, 0.45);
 }
@@ -436,8 +258,7 @@ select.form-control {
 }
 
 .modal-small  { max-width: 400px; }
-
-.modal-editar-criterios { max-width: 700px; }
+.modal-editar { max-width: 700px; }
 
 .modal-header {
     display: flex;
@@ -446,8 +267,6 @@ select.form-control {
     padding: 20px 25px;
     background: linear-gradient(90deg, #1D3579 0%, #1E387B 13%, #48BED7 100%);
     border-radius: 16px 16px 0 0;
-    width: 100%;
-    margin: 0;
 }
 
 .modal-header h2 {
@@ -471,13 +290,15 @@ select.form-control {
 .modal-body { padding: 25px; }
 
 /* =====================
-   MODAL EDITAR CRITERIOS
+   MODAL EDITAR
 ===================== */
 .ec-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
     margin-bottom: 25px;
+    max-height: 340px;
+    overflow-y: auto;
 }
 
 .ec-item {
@@ -528,16 +349,101 @@ select.form-control {
     padding-top: 5px;
 }
 
+.btn-cancelar-editar {
+    background: white;
+    border: 2px solid #1D3579;
+    border-radius: 25px;
+    color: #1D3579;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    padding: 13px 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-cancelar-editar:hover {
+    background: #1D3579;
+    color: white;
+}
+
+.btn-guardar {
+    background: linear-gradient(90deg, #1D3579 0%, #1E387B 13%, #48BED7 100%);
+    border: none;
+    border-radius: 25px;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    padding: 13px 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 8px rgba(29, 53, 121, 0.35);
+    justify-content: center;
+}
+
+.btn-guardar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(72, 190, 215, 0.45);
+}
+
 /* =====================
-   MODAL NUEVO CRITERIO
+   MODAL NUEVO SUBCRITERIO
 ===================== */
+.form-group label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #555;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 11px 15px;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    color: #333;
+    background-color: white;
+    transition: border-color 0.3s ease;
+    appearance: auto;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #1D3579;
+    box-shadow: 0 0 0 3px rgba(29, 53, 121, 0.08);
+}
+
+select.form-control {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%231D3579' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 35px;
+}
+
+.input-row {
+    display: flex;
+    gap: 10px;
+}
+
+.select-small {
+    flex: 0 0 110px;
+}
+
 .modal-actions-center {
     display: flex;
     justify-content: center;
     margin-top: 20px;
 }
 
-.btn-crear-criterio {
+.btn-crear {
     background: linear-gradient(90deg, #FF0000 0%, #EF0A0A 13%, #931212 82%);
     border: none;
     border-radius: 25px;
@@ -551,14 +457,13 @@ select.form-control {
     box-shadow: 0 2px 8px rgba(255, 0, 0, 0.3);
 }
 
-.btn-crear-criterio:hover {
+.btn-crear:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 14px rgba(147, 18, 18, 0.4);
 }
 
 /* =====================
    MODAL CONFIRMAR
-   (Guardar / Cancelar)
 ===================== */
 .modal-confirm-body {
     text-align: center;
@@ -585,7 +490,6 @@ select.form-control {
     gap: 15px;
 }
 
-/* Botón Sí - rojo */
 .btn-si {
     background: linear-gradient(90deg, #FF0000 0%, #EF0A0A 13%, #931212 82%);
     border: none;
@@ -605,7 +509,6 @@ select.form-control {
     box-shadow: 0 4px 14px rgba(147, 18, 18, 0.4);
 }
 
-/* Botón No - azul teal */
 .btn-no {
     background: linear-gradient(90deg, #1D3579 0%, #1E387B 13%, #48BED7 100%);
     border: none;
@@ -780,17 +683,8 @@ select.form-control {
     .content { padding: 20px 20px 40px; }
     nav { gap: 15px; }
     nav a { font-size: 13px; }
-    .form-row { grid-template-columns: 1fr; }
-    .form-row.single { max-width: 100%; }
-    .cumplimiento-bar { flex-direction: column; width: 100%; max-width: 100%; }
-    .cumplimiento-label { width: 100%; text-align: center; }
-    .cumplimiento-input-group { width: 100%; padding: 10px 15px; }
-    .criterios-header { flex-direction: column; align-items: flex-start; gap: 15px; }
-    .criterios-actions { width: 100%; justify-content: flex-end; }
     .bottom-actions,
     .ec-bottom-actions { flex-direction: column; align-items: center; }
-    .btn-cancelar,
-    .btn-guardar-plantilla { width: 100%; max-width: 400px; }
     .info-row { grid-template-columns: 1fr; }
     .modal-actions { flex-direction: column; }
     .confirm-actions { flex-direction: column; align-items: center; }
@@ -804,26 +698,4 @@ select.form-control {
     nav a { font-size: 12px; }
     .user-icon { position: absolute; top: 12px; right: 15px; width: 35px; height: 35px; }
     .page-title { font-size: 22px; }
-    .criterios-title { font-size: 18px; }
-    .btn-editar-criterio,
-    .btn-agregar-criterio { font-size: 13px; padding: 9px 18px; }
-    .modal-small { max-width: 95%; }
-}
-/* MODAL PANEL SUBCRITERIOS */
-.modal-panel-subcriterios {
-    max-width: 700px;
-}
-
-.subcriterios-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 25px;
-}
-
-.subcriterios-actions {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 20px;
 }

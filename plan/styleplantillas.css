@@ -195,7 +195,7 @@ nav a.active::after {
 
 .btn-export,
 .export-btn {
-    background-color: #DC2626;
+    background: linear-gradient(90deg, #CD4A4A 0%, #FF4E4E 13%, #D7486C 100%);
     border: none;
     border-radius: 25px;
     padding: 12px 40px;
@@ -205,13 +205,13 @@ nav a.active::after {
     font-family: 'Inter', sans-serif;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.3s ease;
-    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.2);
+    box-shadow: 0 2px 8px rgba(205, 74, 74, 0.3);
 }
 
 .btn-export:hover,
 .export-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+    box-shadow: 0 4px 12px rgba(215, 72, 108, 0.45);
 }
 
 .btn-export:active,
@@ -219,9 +219,10 @@ nav a.active::after {
     transform: translateY(0);
 }
 
+/* ✅ Botón Agregar Plantilla con gradiente personalizado */
 .btn-add,
 .add-btn {
-    background: linear-gradient(90deg, #DC2626 0%, #48BED7 100%);
+    background: linear-gradient(90deg, #1D3579 0%, #1E387B 13%, #48BED7 100%);
     border: none;
     border-radius: 25px;
     padding: 12px 30px;
@@ -230,13 +231,13 @@ nav a.active::after {
     gap: 10px;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.3s ease;
-    box-shadow: 0 2px 8px rgba(72, 190, 215, 0.3);
+    box-shadow: 0 2px 8px rgba(29, 53, 121, 0.35);
 }
 
 .btn-add:hover,
 .add-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(72, 190, 215, 0.4);
+    box-shadow: 0 4px 14px rgba(72, 190, 215, 0.45);
 }
 
 .btn-add svg,
@@ -299,8 +300,9 @@ nav a.active::after {
     justify-content: center;
 }
 
+/* ✅ Botón Editar con gradiente personalizado */
 .btn-editar {
-    background-color: #1D3579;
+    background: linear-gradient(90deg, #1D3579 0%, #1E387B 13%, #48BED7 100%);
     border: none;
     border-radius: 25px;
     color: white;
@@ -310,11 +312,12 @@ nav a.active::after {
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.3s ease;
     min-width: 100px;
+    box-shadow: 0 2px 8px rgba(29, 53, 121, 0.35);
 }
 
 .btn-editar:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(29, 53, 121, 0.3);
+    box-shadow: 0 4px 14px rgba(72, 190, 215, 0.45);
 }
 
 .btn-editar:active {
@@ -392,45 +395,23 @@ nav a.active::after {
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 @keyframes slideDown {
-    from {
-        transform: translateY(-50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 @keyframes slideInRight {
-    from {
-        transform: translateX(400px);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+    from { transform: translateX(400px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
 }
 
 @keyframes slideOutRight {
-    from {
-        transform: translateX(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateX(400px);
-        opacity: 0;
-    }
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(400px); opacity: 0; }
 }
 
 .modal-content {
@@ -454,28 +435,31 @@ nav a.active::after {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 25px 30px;
-    border-bottom: 2px solid #E5E7EB;
+    padding: 22px 28px;
+    background: linear-gradient(90deg, #1D3579 0%, #1E387B 13%, #48BED7 100%);
+    border-radius: 16px 16px 0 0; /* que coincida con el modal-content */
+    margin: 0;        /* agrega esto */
+    width: 100%;
 }
 
 .modal-header h2 {
-    color: #1D3579;
-    font-size: 24px;
+    color: white;
+    font-size: 22px;
     font-weight: 700;
     margin: 0;
 }
 
 .close-modal {
-    color: #666;
-    font-size: 32px;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 28px;
     font-weight: 300;
     cursor: pointer;
-    transition: color 0.3s ease;
+    transition: color 0.2s ease;
     line-height: 1;
 }
 
 .close-modal:hover {
-    color: #1D3579;
+    color: white;
 }
 
 .modal-body {
@@ -532,23 +516,25 @@ select.form-control {
 }
 
 .btn-crear {
-    background-color: #DC2626;
+   background: linear-gradient(90deg, #1D3579 0%, #1E387B 13%, #48BED7 100%);
+    box-shadow: 0 2px 8px rgba(29, 53, 121, 0.35);
     border: none;
-    border-radius: 8px;
+    border-radius: 25px;
     color: white;
     padding: 12px 40px;
     font-size: 16px;
     font-weight: 700;
     font-family: 'Inter', sans-serif;
+    flex: 1;          /* agrega esto */
+    min-width: 150px; /* agrega esto */
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+    box-shadow: 0 2px 8px rgba(205, 74, 74, 0.3);
 }
 
 .btn-crear:hover {
-    background-color: #B91C1C;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+    box-shadow: 0 4px 14px rgba(72, 190, 215, 0.45);
 }
 
 .btn-crear:active {
@@ -674,13 +660,14 @@ select.form-control {
     padding-top: 25px;
     border-top: 2px solid #E5E7EB;
     flex-wrap: wrap;
+    justify-content: flex-end;
 }
 
 .btn-primary,
 .btn-secondary,
 .btn-danger {
     padding: 12px 30px;
-    border-radius: 8px;
+    border-radius: 25px;
     font-size: 15px;
     font-weight: 600;
     font-family: 'Inter', sans-serif;
@@ -714,7 +701,7 @@ select.form-control {
 }
 
 .btn-danger {
-    background-color: #DC2626;
+    background: linear-gradient(90deg, #CD4A4A 0%, #FF4E4E 13%, #D7486C 100%);
     color: white;
 }
 
@@ -726,239 +713,63 @@ select.form-control {
 
 /* Responsive Design */
 @media (max-width: 1200px) {
-    header {
-        padding: 15px 40px;
-    }
-    
-    .content {
-        padding: 30px;
-    }
-    
-    nav {
-        gap: 30px;
-    }
-    
-    .plantilla-card {
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-    }
-    
-    .plantilla-action {
-        grid-column: 1 / -1;
-        justify-content: flex-start;
-    }
-    
-    .filter-row {
-        flex-wrap: wrap;
-    }
+    header { padding: 15px 40px; }
+    .content { padding: 30px; }
+    nav { gap: 30px; }
+    .plantilla-card { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .plantilla-action { grid-column: 1 / -1; justify-content: flex-start; }
+    .filter-row { flex-wrap: wrap; }
 }
 
 @media (max-width: 992px) {
-    header {
-        padding: 15px 30px;
-    }
-    
-    .content {
-        padding: 20px;
-    }
-    
-    nav {
-        gap: 20px;
-        font-size: 14px;
-    }
-    
-    .filters-section {
-        padding: 20px;
-    }
+    header { padding: 15px 30px; }
+    .content { padding: 20px; }
+    nav { gap: 20px; font-size: 14px; }
+    .filters-section { padding: 20px; }
 }
 
+
 @media (max-width: 768px) {
-    header {
-        padding: 15px 20px;
-    }
-    
-    nav {
-        gap: 15px;
-    }
-    
-    nav a {
-        font-size: 13px;
-    }
-    
-    .filter-row {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .filter-group.small {
-        flex: 1;
-    }
-    
-    .button-group {
-        width: 100%;
-        justify-content: space-between;
-        flex-wrap: wrap;
-    }
-    
-    .btn-export, .export-btn {
-        flex: 1;
-        min-width: 120px;
-    }
-    
-    .btn-add, .add-btn {
-        flex: 1;
-        min-width: 120px;
-        justify-content: center;
-    }
-    
-    .plantilla-card {
-        grid-template-columns: 1fr;
-        padding: 20px;
-        gap: 15px;
-    }
-    
-    .btn-editar {
-        width: 100%;
-    }
-    
-    /* Modal responsive */
-    .modal-content {
-        width: 95%;
-        max-height: 95vh;
-    }
-    
-    .modal-plantilla {
-        width: 95%;
-    }
-    
-    .form-row {
-        grid-template-columns: 1fr;
-    }
-    
-    .modal-header {
-        padding: 20px;
-    }
-    
-    .modal-header h2 {
-        font-size: 20px;
-    }
-    
-    .modal-body {
-        padding: 20px;
-    }
-    
-    .info-row {
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-    
-    .modal-actions {
-        flex-direction: column;
-    }
-    
-    .btn-primary,
-    .btn-secondary,
-    .btn-danger {
-        width: 100%;
-        min-width: unset;
-    }
+    header { padding: 15px 20px; }
+    nav { gap: 15px; }
+    nav a { font-size: 13px; }
+    .filter-row { flex-direction: column; align-items: stretch; }
+    .filter-group.small { flex: 1; }
+    .button-group { width: 100%; justify-content: space-between; flex-wrap: wrap; }
+    .btn-export, .export-btn { flex: 1; min-width: 120px; }
+    .btn-add, .add-btn { flex: 1; min-width: 120px; justify-content: center; }
+    .plantilla-card { grid-template-columns: 1fr; padding: 20px; gap: 15px; }
+    .btn-editar { width: 100%; }
+    .modal-content { width: 95%; max-height: 95vh; }
+    .modal-plantilla { width: 95%; }
+    .form-row { grid-template-columns: 1fr; }
+    .modal-header { padding: 20px; }
+    .modal-header h2 { font-size: 20px; }
+    .modal-body { padding: 20px; }
+    .info-row { grid-template-columns: 1fr; gap: 15px; }
+    .modal-actions { flex-direction: column; }
+    .btn-primary, .btn-secondary, .btn-danger { width: 100%; min-width: unset; }
 }
 
 @media (max-width: 576px) {
-    header {
-        flex-wrap: wrap;
-        gap: 15px;
-        padding: 12px 15px;
-    }
-    
-    .logo-container {
-        flex: 1 1 100%;
-        justify-content: center;
-    }
-    
-    .logo-container img {
-        height: 38px;
-    }
-    
-    nav {
-        flex: 1 1 100%;
-        justify-content: space-around;
-        gap: 8px;
-    }
-    
-    nav a {
-        font-size: 12px;
-    }
-    
-    .user-icon {
-        position: absolute;
-        top: 12px;
-        right: 15px;
-        width: 35px;
-        height: 35px;
-    }
-    
-    .user-icon svg {
-        width: 20px;
-        height: 20px;
-    }
-    
-    .content {
-        padding: 12px;
-    }
-    
-    .filters-section {
-        padding: 15px;
-    }
-    
-    .filter-select,
-    .date-field {
-        font-size: 13px;
-        padding: 9px 12px;
-    }
-    
-    .btn-export, .export-btn {
-        font-size: 14px;
-        padding: 10px 20px;
-    }
-    
-    .btn-add-text {
-        font-size: 14px;
-    }
-    
-    .plantilla-card {
-        padding: 18px;
-    }
-    
-    .plantilla-title {
-        font-size: 15px;
-    }
-    
-    .plantilla-subtitle {
-        font-size: 13px;
-    }
-    
-    .btn-editar {
-        font-size: 15px;
-        padding: 10px 30px;
-    }
-    
-    /* Modal responsive móvil */
-    .avatar-circle {
-        width: 100px;
-        height: 100px;
-    }
-    
-    .avatar-circle svg {
-        width: 60px;
-        height: 60px;
-    }
-    
-    .modal-header h2 {
-        font-size: 18px;
-    }
-    
-    .close-modal {
-        font-size: 28px;
-    }
+    header { flex-wrap: wrap; gap: 15px; padding: 12px 15px; }
+    .logo-container { flex: 1 1 100%; justify-content: center; }
+    .logo-container img { height: 38px; }
+    nav { flex: 1 1 100%; justify-content: space-around; gap: 8px; }
+    nav a { font-size: 12px; }
+    .user-icon { position: absolute; top: 12px; right: 15px; width: 35px; height: 35px; }
+    .user-icon svg { width: 20px; height: 20px; }
+    .content { padding: 12px; }
+    .filters-section { padding: 15px; }
+    .filter-select, .date-field { font-size: 13px; padding: 9px 12px; }
+    .btn-export, .export-btn { font-size: 14px; padding: 10px 20px; }
+    .btn-add-text { font-size: 14px; }
+    .plantilla-card { padding: 18px; }
+    .plantilla-title { font-size: 15px; }
+    .plantilla-subtitle { font-size: 13px; }
+    .btn-editar { font-size: 15px; padding: 10px 30px; }
+    .avatar-circle { width: 100px; height: 100px; }
+    .avatar-circle svg { width: 60px; height: 60px; }
+    .modal-header h2 { font-size: 18px; }
+    .close-modal { font-size: 28px; }
 }

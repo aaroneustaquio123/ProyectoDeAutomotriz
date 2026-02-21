@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styleauditorias.css">
+    <link rel="icon" type="image/png" href="../LogoSummas.png"> 
 </head>
 <body>
     <header>
@@ -164,74 +165,87 @@
             </div>
             <div class="modal-body">
                 <form id="formNuevaAuditoria">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="nuevaEmpresa">Empresa</label>
-                            <select id="nuevaEmpresa" class="form-input" required>
-                                <option value="">Selecciona la empresa</option>
-                                <option value="toyota">Toyota</option>
-                                <option value="nissan">Nissan</option>
-                                <option value="honda">Honda</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="nuevaMarca">Marca</label>
-                            <select id="nuevaMarca" class="form-input" required>
-                                <option value="">Selecciona la marca</option>
-                                <option value="lexus">Lexus</option>
-                                <option value="toyota">Toyota</option>
-                                <option value="nissan">Nissan</option>
-                            </select>
-                        </div>
-                    </div>
+    <div class="form-row">
+        <div class="form-group">
+            <label>Empresa</label>
+            <select id="nuevaEmpresa" class="form-input" required>
+                <option value="">Selecciona la empresa</option>
+                <option value="Toyota">Toyota</option>
+                <option value="Hyundai">Hyundai</option>
+                <option value="Kia">Kia</option>
+                <option value="Nissan">Nissan</option>
+                <option value="Chevrolet">Chevrolet</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Marca</label>
+            <select id="nuevaMarca" class="form-input" required>
+                <option value="">Selecciona la marca</option>
+                <option value="Toyota">Toyota</option>
+                <option value="Hyundai">Hyundai</option>
+                <option value="Kia">Kia</option>
+                <option value="Nissan">Nissan</option>
+                <option value="Chevrolet">Chevrolet</option>
+            </select>
+        </div>
+    </div>
 
-                    <div class="form-row">
-                        <div class="form-group full-width">
-                            <label for="nuevoLocal">Local</label>
-                            <select id="nuevoLocal" class="form-input" required>
-                                <option value="">Selecciona el local</option>
-                                <option value="surco">Grupo Pana: Surco</option>
-                                <option value="miraflores">Grupo Pana: Miraflores</option>
-                                <option value="san-isidro">Grupo Pana: San Isidro</option>
-                            </select>
-                        </div>
-                    </div>
+    <div class="form-row">
+        <div class="form-group">
+            <label>Concesionaria</label>
+            <select id="nuevaConcesionaria" class="form-input" required>
+                <option value="">Selecciona la concesionaria</option>
+                <option value="Concesionaria Norte">Concesionaria Norte</option>
+                <option value="Concesionaria Sur">Concesionaria Sur</option>
+                <option value="Concesionaria Este">Concesionaria Este</option>
+                <option value="Concesionaria Oeste">Concesionaria Oeste</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Local</label>
+            <select id="nuevoLocal" class="form-input" required>
+                <option value="">Selecciona el local</option>
+                <option value="Miraflores">Miraflores</option>
+                <option value="San Isidro">San Isidro</option>
+                <option value="Surco">Surco</option>
+                <option value="La Molina">La Molina</option>
+                <option value="San Borja">San Borja</option>
+            </select>
+        </div>
+    </div>
 
-                    <div class="form-row">
-                        <div class="form-group full-width">
-                            <label for="nuevaEvaluacion">Evaluación</label>
-                            <select id="nuevaEvaluacion" class="form-input" required>
-                                <option value="">Selecciona la evaluación</option>
-                                <option value="ventas">Procesos (Ventas): Mystery Shopper</option>
-                                <option value="servicio">Procesos (Servicio): Mystery Shopper</option>
-                                <option value="general">Procesos (General): Mystery Shopper</option>
-                            </select>
-                        </div>
-                    </div>
+    <div class="form-row">
+        <div class="form-group">
+            <label>Evaluación</label>
+            <select id="nuevaEvaluacion" class="form-input" required>
+                <option value="">Selecciona la evaluación</option>
+                <option value="Evaluación DMS">Evaluación DMS</option>
+                <option value="Evaluación Postventa">Evaluación Postventa</option>
+                <option value="Evaluación Ventas">Evaluación Ventas</option>
+                <option value="Evaluación Infraestructura">Evaluación Infraestructura</option>
+                <option value="Evaluación RRHH">Evaluación RRHH</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Auditor</label>
+            <input type="text" id="nuevoAuditor" class="form-input" placeholder="Nombre del auditor" required>
+        </div>
+    </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="nuevoAuditor">Auditor</label>
-                            <input type="text" id="nuevoAuditor" class="form-input" placeholder="Nombre del auditor" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="nuevaFecha">Fecha</label>
-                            <div class="date-input-wrapper">
-                                <input type="date" id="nuevaFecha" class="form-input" required>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D3579" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
+    <div class="form-row">
+        <div class="form-group full-width">
+            <label>Fecha</label>
+            <div class="date-input-wrapper">
+                <input type="date" id="nuevaFecha" class="form-input" required>
+            </div>
+        </div>
+    </div>
 
-                    <div class="form-actions">
-                        <button type="submit" class="btn-crear">Crear</button>
-                    </div>
-                </form>
+    <div class="form-actions-double">
+        <button type="button" class="btn-cancelar" id="btnCancelarAuditoria">Cancelar</button>
+        <button type="submit" class="btn-guardar">Guardar</button>
+    </div>
+</form>
             </div>
         </div>
     </div>
