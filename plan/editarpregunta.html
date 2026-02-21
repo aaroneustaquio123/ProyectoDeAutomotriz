@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Summas - Agregar Pregunta</title>
+    <title>Summas - Editar Pregunta</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styleagregarpregunta.css">
+    <link rel="stylesheet" href="styleeditarpregunta.css">
 </head>
 <body>
     <header>
@@ -35,7 +35,7 @@
             Volver
         </a>
 
-        <h1 class="page-title">Agregar Pregunta</h1>
+        <h1 class="page-title">Editar Pregunta</h1>
 
         <div class="form-card">
 
@@ -56,9 +56,7 @@
 
             <div class="form-group">
                 <label>¿Qué tipo de métrica utilizar?</label>
-
                 <div class="metrica-wrapper">
-
                     <!-- FILA RANGO -->
                     <div class="metrica-fila" id="filaRango">
                         <div class="select-wrapper">
@@ -75,26 +73,26 @@
                             Agregar Intervalo
                         </button>
                     </div>
-
-                    <!-- FILA SI/NO: solo el botón, sin nada más -->
+                    <!-- FILA SI/NO -->
                     <div class="metrica-fila" id="filaSino">
                         <div class="select-wrapper">
                             <div class="form-control select-metrica" id="btnSino">Sí / No</div>
                             <span class="select-dot" id="dotSino"></span>
                         </div>
                     </div>
-
                 </div>
             </div>
 
             <div class="bottom-actions">
-                <button class="btn-cancelar" id="btnCancelar">Cancelar</button>
-                <button class="btn-crear-pregunta" id="btnCrearPregunta">Crear Pregunta</button>
+                <button class="btn-eliminar" id="btnEliminarPregunta">Eliminar pregunta</button>
+                <button class="btn-actualizar" id="btnGuardarPregunta">Actualizar pregunta</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: NUEVO INTERVALO -->
+    <!-- ========================
+         MODAL: NUEVO INTERVALO
+    ======================== -->
     <div id="modalIntervalo" class="modal">
         <div class="modal-content modal-small">
             <div class="modal-header">
@@ -126,16 +124,58 @@
                     </select>
                 </div>
                 <div class="modal-actions-center">
-                    <button class="btn-crear-pregunta btn-ancho" id="btnConfirmarIntervalo">Crear</button>
+                    <button class="btn-actualizar btn-ancho" id="btnConfirmarIntervalo">Crear</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: ACCION COMPLETADA -->
+    <!-- ========================
+         MODAL: CONFIRMAR ACTUALIZAR
+    ======================== -->
+    <div id="modalConfirmarActualizar" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header modal-header-gradient">
+                <h2>Guardar Cambios</h2>
+                <span class="close-modal" id="closeConfirmarActualizar">&times;</span>
+            </div>
+            <div class="modal-body modal-confirm-body">
+                <p class="confirm-titulo">¿Estás seguro de guardar?</p>
+                <p class="confirm-subtexto">Recuerda que todos los cambios que hayas realizado se guardarán de forma definitiva.</p>
+                <div class="confirm-actions">
+                    <button class="btn-confirm-si" id="btnSiActualizar">Sí</button>
+                    <button class="btn-confirm-no" id="btnNoActualizar">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================
+         MODAL: CONFIRMAR ELIMINAR
+    ======================== -->
+    <div id="modalConfirmarEliminar" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header modal-header-gradient">
+                <h2>Eliminar pregunta</h2>
+                <span class="close-modal" id="closeConfirmarEliminar">&times;</span>
+            </div>
+            <div class="modal-body modal-confirm-body">
+                <p class="confirm-titulo">¿Estás seguro que quieres eliminar la pregunta?</p>
+                <p class="confirm-subtexto">Recuerda que todos los cambios que hayas realizado se guardarán de forma definitiva.</p>
+                <div class="confirm-actions">
+                    <button class="btn-confirm-si" id="btnSiEliminar">Sí</button>
+                    <button class="btn-confirm-no" id="btnNoEliminar">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================
+         MODAL: ACCION COMPLETADA
+    ======================== -->
     <div id="modalCompletado" class="modal">
         <div class="modal-content modal-small">
-            <div class="modal-header">
+            <div class="modal-header modal-header-gradient">
                 <h2>Acción completada</h2>
                 <span class="close-modal" id="closeCompletado">&times;</span>
             </div>
@@ -145,7 +185,9 @@
         </div>
     </div>
 
-    <!-- MODAL: PERFIL -->
+    <!-- ========================
+         MODAL: PERFIL
+    ======================== -->
     <div id="profileModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -213,6 +255,6 @@
         </div>
     </div>
 
-    <script src="scriptagregarpregunta.js"></script>
+    <script src="scripteditarpregunta.js"></script>
 </body>
 </html>

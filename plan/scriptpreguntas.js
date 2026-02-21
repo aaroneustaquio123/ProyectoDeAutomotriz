@@ -7,52 +7,78 @@ document.addEventListener('DOMContentLoaded', function () {
             'PREGUNTAS - ' + decodeURIComponent(subcriterio).toUpperCase();
     }
 
+    cargarPreguntasGuardadas();
+    aplicarEdicionSiHay();
     initAgregarPregunta();
     initPerfil();
 });
 
 // ================================================
-// AGREGAR PREGUNTA
+// CARGAR PREGUNTAS DEL HISTORIAL
 // ================================================
-function initAgregarPregunta() {
-    const modal    = document.getElementById('modalNuevaPregunta');
-    const btnAbrir = document.getElementById('btnAgregarPregunta');
-    const btnClose = document.getElementById('closeNuevaPregunta');
-    const btnCrear = document.getElementById('btnCrearPregunta');
-    const input    = document.getElementById('inputNuevaPregunta');
+function cargarPreguntasGuardadas() {
+    var historial  = JSON.parse(localStorage.getItem('historialPreguntas') || '[]');
+    var nuevaTexto = localStorage.getItem('nuevaPregunta');
 
-    btnAbrir.addEventListener('click', function () {
-    window.location.href = 'agregarpregunta.html';
-});
+    historial.forEach(function (p, idx) {
+        var esNueva = nuevaTexto && p.texto === nuevaTexto;
+        renderPregunta(p.texto, idx, esNueva);
+    });
 
-    btnClose.addEventListener('click', () => cerrarModal('modalNuevaPregunta'));
-
-    btnCrear.addEventListener('click', function () {
-        const texto = input ? input.value.trim() : '';
-        if (!texto) {
-            input.style.borderColor = '#E53E3E';
-            input.focus();
-            return;
-        }
-        input.style.borderColor = '';
-        agregarPregunta(texto);
-        cerrarModal('modalNuevaPregunta');
+    if (nuevaTexto) {
+        localStorage.removeItem('nuevaPregunta');
         showNotification('Pregunta agregada correctamente');
-    });
-
-    if (input) {
-        input.addEventListener('input', () => { input.style.borderColor = ''; });
     }
-
-    window.addEventListener('click', e => {
-        if (e.target === modal) cerrarModal('modalNuevaPregunta');
-    });
 }
 
-function agregarPregunta(texto) {
+// ================================================
+// APLICAR EDICIÓN AL VOLVER DE editarpregunta.html
+// ================================================
+function aplicarEdicionSiHay() {
+    var editadaStr = localStorage.getItem('preguntaEditada');
+    if (!editadaStr) return;
+
+    var editada = JSON.parse(editadaStr);
+    localStorage.removeItem('preguntaEditada');
+
+    if (editada.index !== null && editada.index !== undefined) {
+        // Era una pregunta del historial: actualizar el item ya renderizado
+        var items = document.querySelectorAll('.pregunta-item[data-idx]');
+        items.forEach(function (item) {
+            if (parseInt(item.dataset.idx) === editada.index) {
+                item.querySelector('.pregunta-nombre').textContent = editada.datos.texto.toUpperCase();
+                // Animación flash para indicar que fue editada
+                item.style.transition = 'background 0.4s';
+                item.style.background = '#EEF1FB';
+                setTimeout(function () { item.style.background = ''; }, 800);
+            }
+        });
+    } else {
+        // Era una pregunta fija del HTML: buscarla por texto original y actualizarla
+        var todos = document.querySelectorAll('.pregunta-item');
+        todos.forEach(function (item) {
+            var span = item.querySelector('.pregunta-nombre');
+            if (span && span.textContent === editada.textoOriginal.toUpperCase()) {
+                span.textContent = editada.datos.texto.toUpperCase();
+                item.style.transition = 'background 0.4s';
+                item.style.background = '#EEF1FB';
+                setTimeout(function () { item.style.background = ''; }, 800);
+            }
+        });
+    }
+
+    showNotification('Pregunta editada correctamente');
+}
+
+// ================================================
+// RENDERIZAR PREGUNTA EN LA LISTA
+// ================================================
+function renderPregunta(texto, idx, animada) {
     const lista = document.getElementById('preguntasList');
     const item  = document.createElement('div');
-    item.className = 'pregunta-item';
+    item.className    = 'pregunta-item';
+    item.dataset.idx  = idx;   // índice en historialPreguntas
+    item.style.cursor = 'pointer';
     item.innerHTML = `
         <span class="pregunta-nombre">${texto.toUpperCase()}</span>
         <svg class="pregunta-arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -61,7 +87,75 @@ function agregarPregunta(texto) {
             <polyline points="9 18 15 12 9 6"></polyline>
         </svg>
     `;
-    lista.appendChild(item);
+
+    // Click -> editar
+    item.addEventListener('click', function () {
+        irAEditar(idx, texto);
+    });
+
+    if (animada) {
+        item.style.opacity    = '0';
+        item.style.transform  = 'translateY(-10px)';
+        item.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+        lista.appendChild(item);
+        requestAnimationFrame(function () {
+            item.style.opacity   = '1';
+            item.style.transform = 'translateY(0)';
+        });
+    } else {
+        lista.appendChild(item);
+    }
+}
+
+// ================================================
+// IR A EDITAR - guarda datos en localStorage y redirige
+// ================================================
+function irAEditar(idx, texto) {
+    var historial = JSON.parse(localStorage.getItem('historialPreguntas') || '[]');
+    var datos     = historial[idx] || { texto: texto };
+    datos.index   = idx;
+
+    localStorage.setItem('editandoPregunta', JSON.stringify(datos));
+    window.location.href = 'editarpregunta.html';
+}
+
+// ================================================
+// HACER CLICKEABLES LAS PREGUNTAS FIJAS DEL HTML
+// ================================================
+// Esto se ejecuta al cargar para que las preguntas hardcodeadas en el HTML también sean editables
+document.addEventListener('DOMContentLoaded', function () {
+    var itemsFijos = document.querySelectorAll('#preguntasList .pregunta-item:not([data-idx])');
+    itemsFijos.forEach(function (item) {
+        item.style.cursor = 'pointer';
+        item.addEventListener('click', function () {
+            var texto = item.querySelector('.pregunta-nombre').textContent;
+            localStorage.setItem('editandoPregunta', JSON.stringify({
+                texto:     texto,
+                como:      '',
+                peso:      '3',
+                metrica:   'Rango',
+                intervalos:[],
+                index:     null
+            }));
+            window.location.href = 'editarpregunta.html';
+        });
+    });
+});
+
+// ================================================
+// AGREGAR PREGUNTA
+// ================================================
+function initAgregarPregunta() {
+    const btnAbrir = document.getElementById('btnAgregarPregunta');
+
+    btnAbrir.addEventListener('click', function () {
+        window.location.href = 'agregarpregunta.html';
+    });
+
+    window.addEventListener('click', e => {
+        const modal = document.getElementById('modalNuevaPregunta');
+        if (e.target === modal) cerrarModal('modalNuevaPregunta');
+    });
 }
 
 // ================================================
@@ -153,11 +247,9 @@ function showNotification(message) {
         font-weight: 600;
         font-family: 'Inter', sans-serif;
         font-size: 14px;
-        animation: slideInRight 0.3s ease;
     `;
     document.body.appendChild(n);
     setTimeout(() => {
-        n.style.animation = 'slideOutRight 0.3s ease';
         setTimeout(() => { if (document.body.contains(n)) document.body.removeChild(n); }, 300);
     }, 3000);
 }

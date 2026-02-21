@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     poblarSelectsPct();
+    cargarDatosPregunta();
     initMetrica();
     initIntervalos();
     initBotones();
@@ -7,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // ================================================
-// POBLAR SELECTS DE % (0%, 10%, ... 100%)
+// POBLAR SELECTS DE %
 // ================================================
 function poblarSelectsPct() {
     ['inputDesde', 'inputHasta'].forEach(function (id) {
@@ -28,6 +29,27 @@ function poblarSelectsPct() {
 }
 
 // ================================================
+// CARGAR DATOS DE LA PREGUNTA A EDITAR
+// ================================================
+function cargarDatosPregunta() {
+    var editando = localStorage.getItem('editandoPregunta');
+    if (!editando) return;
+
+    var datos = JSON.parse(editando);
+
+    var inputQ    = document.getElementById('inputQueEvaluar');
+    var inputC    = document.getElementById('inputComoEvaluar');
+    var inputPeso = document.getElementById('inputPeso');
+
+    if (inputQ    && datos.texto) inputQ.value    = datos.texto;
+    if (inputC    && datos.como)  inputC.value    = datos.como;
+    if (inputPeso && datos.peso)  inputPeso.value = datos.peso;
+
+    window._metricaInicial      = datos.metrica    || 'Rango';
+    window._intervalosIniciales = datos.intervalos || [];
+}
+
+// ================================================
 // METRICA
 // ================================================
 function initMetrica() {
@@ -45,6 +67,7 @@ function initMetrica() {
         dotSino.style.border      = '2px solid #ccc';
         btnAgregarIntervalo.style.display = 'flex';
         intervalosRow.style.display = intervalosRow.children.length > 0 ? 'flex' : 'none';
+        window._metricaActiva = 'Rango';
     }
 
     function activarSino() {
@@ -54,11 +77,25 @@ function initMetrica() {
         dotRango.style.border     = '2px solid #ccc';
         btnAgregarIntervalo.style.display = 'none';
         intervalosRow.style.display       = 'none';
+        window._metricaActiva = 'Sí / No';
     }
 
     btnRango.addEventListener('click', activarRango);
     btnSino.addEventListener('click', activarSino);
-    activarRango();
+
+    if (window._metricaInicial === 'Sí / No') {
+        activarSino();
+    } else {
+        activarRango();
+    }
+
+    // Restaurar intervalos guardados
+    if (window._intervalosIniciales && window._intervalosIniciales.length > 0) {
+        window._intervalosIniciales.forEach(function (txt) {
+            agregarIntervaloTag(txt);
+        });
+        intervalosRow.style.display = 'flex';
+    }
 }
 
 // ================================================
@@ -71,8 +108,6 @@ function initIntervalos() {
     var btnAgregarIntervalo = document.getElementById('btnAgregarIntervalo');
     var btnClose            = document.getElementById('closeIntervalo');
     var btnCrear            = document.getElementById('btnConfirmarIntervalo');
-    var modalCompletado     = document.getElementById('modalCompletado');
-    var btnCloseCompletado  = document.getElementById('closeCompletado');
 
     btnAgregarIntervalo.addEventListener('click', function () {
         var label = document.getElementById('labelIntervalo');
@@ -96,16 +131,10 @@ function initIntervalos() {
         contadorIntervalos++;
         document.getElementById('intervalosRow').style.display = 'flex';
         cerrarModal('modalIntervalo');
-        abrirModal('modalCompletado');
-    });
-
-    btnCloseCompletado.addEventListener('click', function () {
-        cerrarModal('modalCompletado');
     });
 
     window.addEventListener('click', function (e) {
-        if (e.target === modalIntervalo)  cerrarModal('modalIntervalo');
-        if (e.target === modalCompletado) cerrarModal('modalCompletado');
+        if (e.target === modalIntervalo) cerrarModal('modalIntervalo');
     });
 }
 
@@ -137,47 +166,144 @@ function eliminarIntervalo(btn) {
     }
 }
 
+function recogerIntervalos() {
+    var tags = document.querySelectorAll('#intervalosRow .intervalo-tag span');
+    return Array.from(tags).map(function (s) { return s.textContent; });
+}
+
 // ================================================
 // BOTONES PRINCIPALES
 // ================================================
 function initBotones() {
-    var btnCancelar = document.getElementById('btnCancelar');
-    var btnCrear    = document.getElementById('btnCrearPregunta');
+    var btnGuardar  = document.getElementById('btnGuardarPregunta');
+    var btnEliminar = document.getElementById('btnEliminarPregunta');
     var inputQ      = document.getElementById('inputQueEvaluar');
 
-    if (btnCancelar) {
-        btnCancelar.addEventListener('click', function () { history.back(); });
-    }
-
-    if (btnCrear) {
-        btnCrear.addEventListener('click', function () {
+    // ---- ACTUALIZAR: abre modal de confirmación ----
+    if (btnGuardar) {
+        btnGuardar.addEventListener('click', function () {
             var queEvaluar = inputQ ? inputQ.value.trim() : '';
             if (!queEvaluar) {
                 if (inputQ) { inputQ.style.borderColor = '#E53E3E'; inputQ.focus(); }
                 return;
             }
             if (inputQ) inputQ.style.borderColor = '';
-
-            // Guardar la nueva pregunta en localStorage
-            // Se usa 'historialPreguntas' directamente para acumular sin borrar
-            var historial = JSON.parse(localStorage.getItem('historialPreguntas') || '[]');
-            historial.push({ texto: queEvaluar, timestamp: Date.now() });
-            localStorage.setItem('historialPreguntas', JSON.stringify(historial));
-
-            // Marcar que hay una pregunta nueva para animarla al volver
-            localStorage.setItem('nuevaPregunta', queEvaluar);
-
-            // Mostrar modal y redirigir tras 1.5s
-            abrirModal('modalCompletado');
-            setTimeout(function () {
-                history.back();
-            }, 1500);
+            abrirModal('modalConfirmarActualizar');
         });
     }
+
+    // ---- ELIMINAR: abre modal de confirmación ----
+    if (btnEliminar) {
+        btnEliminar.addEventListener('click', function () {
+            abrirModal('modalConfirmarEliminar');
+        });
+    }
+
+    // ---- CONFIRMAR ACTUALIZAR: Sí ----
+    document.getElementById('btnSiActualizar').addEventListener('click', function () {
+        guardarCambios();
+        cerrarModal('modalConfirmarActualizar');
+        abrirModal('modalCompletado');
+        setTimeout(function () { history.back(); }, 1500);
+    });
+
+    // ---- CONFIRMAR ACTUALIZAR: No ----
+    document.getElementById('btnNoActualizar').addEventListener('click', function () {
+        cerrarModal('modalConfirmarActualizar');
+    });
+
+    // ---- CONFIRMAR ELIMINAR: Sí ----
+    document.getElementById('btnSiEliminar').addEventListener('click', function () {
+        eliminarPregunta();
+        cerrarModal('modalConfirmarEliminar');
+        abrirModal('modalCompletado');
+        setTimeout(function () { history.back(); }, 1500);
+    });
+
+    // ---- CONFIRMAR ELIMINAR: No ----
+    document.getElementById('btnNoEliminar').addEventListener('click', function () {
+        cerrarModal('modalConfirmarEliminar');
+    });
+
+    // ---- CERRAR MODAL COMPLETADO ----
+    document.getElementById('closeCompletado').addEventListener('click', function () {
+        cerrarModal('modalCompletado');
+    });
+
+    // ---- CERRAR CON X ----
+    document.getElementById('closeConfirmarActualizar').addEventListener('click', function () {
+        cerrarModal('modalConfirmarActualizar');
+    });
+    document.getElementById('closeConfirmarEliminar').addEventListener('click', function () {
+        cerrarModal('modalConfirmarEliminar');
+    });
+
+    // ---- CERRAR AL CLICK FUERA ----
+    window.addEventListener('click', function (e) {
+        ['modalConfirmarActualizar', 'modalConfirmarEliminar', 'modalCompletado'].forEach(function (id) {
+            var m = document.getElementById(id);
+            if (e.target === m) cerrarModal(id);
+        });
+    });
 
     if (inputQ) {
         inputQ.addEventListener('input', function () { inputQ.style.borderColor = ''; });
     }
+}
+
+// ================================================
+// GUARDAR CAMBIOS EN localStorage
+// ================================================
+function guardarCambios() {
+    var inputQ    = document.getElementById('inputQueEvaluar');
+    var queEvaluar = inputQ ? inputQ.value.trim() : '';
+
+    var editando = JSON.parse(localStorage.getItem('editandoPregunta') || '{}');
+    var idx      = editando.index;
+
+    var preguntaActualizada = {
+        texto:      queEvaluar,
+        como:       document.getElementById('inputComoEvaluar').value.trim(),
+        peso:       document.getElementById('inputPeso').value,
+        metrica:    window._metricaActiva || 'Rango',
+        intervalos: recogerIntervalos(),
+        timestamp:  Date.now()
+    };
+
+    var historial = JSON.parse(localStorage.getItem('historialPreguntas') || '[]');
+
+    if (idx !== undefined && idx !== null && historial[idx]) {
+        historial[idx] = preguntaActualizada;
+        localStorage.setItem('historialPreguntas', JSON.stringify(historial));
+        localStorage.setItem('preguntaEditada', JSON.stringify({ index: idx, datos: preguntaActualizada }));
+    } else {
+        localStorage.setItem('preguntaEditada', JSON.stringify({
+            index: null,
+            datos: preguntaActualizada,
+            textoOriginal: editando.texto
+        }));
+    }
+
+    localStorage.removeItem('editandoPregunta');
+}
+
+// ================================================
+// ELIMINAR PREGUNTA DEL localStorage
+// ================================================
+function eliminarPregunta() {
+    var editando = JSON.parse(localStorage.getItem('editandoPregunta') || '{}');
+    var idx      = editando.index;
+
+    if (idx !== undefined && idx !== null) {
+        var historial = JSON.parse(localStorage.getItem('historialPreguntas') || '[]');
+        historial.splice(idx, 1);
+        localStorage.setItem('historialPreguntas', JSON.stringify(historial));
+        localStorage.setItem('preguntaEliminada', JSON.stringify({ index: idx }));
+    } else {
+        localStorage.setItem('preguntaEliminada', JSON.stringify({ textoOriginal: editando.texto }));
+    }
+
+    localStorage.removeItem('editandoPregunta');
 }
 
 // ================================================
@@ -215,7 +341,7 @@ function initPerfil() {
 
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
-            ['modalIntervalo', 'modalCompletado', 'profileModal'].forEach(function (id) {
+            ['modalIntervalo', 'modalConfirmarActualizar', 'modalConfirmarEliminar', 'modalCompletado', 'profileModal'].forEach(function (id) {
                 var m = document.getElementById(id);
                 if (m && m.classList.contains('show')) cerrarModal(id);
             });

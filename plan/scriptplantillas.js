@@ -38,8 +38,8 @@ function initializeDatePickers() {
 // Inicializar filtros
 function initializeFilters() {
     const empresaSelect = document.getElementById('empresa');
-    const marcaSelect = document.getElementById('marca');
-    const estadoSelect = document.getElementById('estado');
+    const marcaSelect   = document.getElementById('marca');
+    const estadoSelect  = document.getElementById('estado');
 
     const empresas = ['Empresa 1', 'Empresa 2', 'Empresa 3'];
     empresas.forEach(empresa => {
@@ -80,14 +80,10 @@ function setupEventListeners() {
     }
 
     const exportBtn = document.querySelector('.export-btn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', exportData);
-    }
+    if (exportBtn) exportBtn.addEventListener('click', exportData);
 
     const addBtn = document.querySelector('.add-btn');
-    if (addBtn) {
-        addBtn.addEventListener('click', abrirModalNuevaPlantilla);
-    }
+    if (addBtn) addBtn.addEventListener('click', abrirModalNuevaPlantilla);
 
     document.querySelectorAll('.filter-select').forEach(select => {
         select.addEventListener('change', applyFilters);
@@ -126,7 +122,7 @@ function renderPlantillas() {
     container.innerHTML = '';
 
     const start = (currentPage - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
+    const end   = start + itemsPerPage;
     const pagePlantillas = filteredPlantillas.slice(start, end);
 
     if (pagePlantillas.length === 0) {
@@ -148,7 +144,7 @@ function renderPlantillas() {
     updatePaginationButtons();
 }
 
-// Crear tarjeta de plantilla
+// Crear tarjeta de plantilla (sin onclick inline para compatibilidad móvil)
 function createPlantillaCard(plantilla) {
     const card = document.createElement('div');
     card.className = 'plantilla-card';
@@ -166,22 +162,21 @@ function createPlantillaCard(plantilla) {
             <div class="plantilla-subtitle">${plantilla.numPreguntas}</div>
         </div>
         <div class="plantilla-action">
-            <button class="btn-editar" onclick="editarPlantilla(${plantilla.id})">Editar</button>
+            <button class="btn-editar">Editar</button>
         </div>
     `;
-    return card;
-}
 
-// Editar plantilla
-function editarPlantilla(id) {
-    window.location.href = `editarplantilla.html?id=${id}`;
+    // addEventListener en vez de onclick inline (funciona correctamente en móvil)
+    card.querySelector('.btn-editar').addEventListener('click', function () {
+        window.location.href = 'editarplantilla.html?id=' + plantilla.id;
+    });
+
+    return card;
 }
 
 // Aplicar filtros
 function applyFilters() {
-    const empresa = document.getElementById('empresa').value;
     const marca = document.getElementById('marca').value;
-    const estado = document.getElementById('estado').value;
 
     filteredPlantillas = plantillasData.filter(plantilla => {
         const marcaMatch = marca === 'Selecciona la marca' || plantilla.marca === marca;
@@ -199,8 +194,8 @@ function updatePaginationInfo() {
 }
 
 function updatePaginationButtons() {
-    const prevBtn = document.getElementById('prevPage');
-    const nextBtn = document.getElementById('nextPage');
+    const prevBtn    = document.getElementById('prevPage');
+    const nextBtn    = document.getElementById('nextPage');
     const totalPages = Math.ceil(filteredPlantillas.length / itemsPerPage);
 
     if (prevBtn) prevBtn.disabled = currentPage === 1;
@@ -245,12 +240,12 @@ function downloadCSV(content, filename) {
 // MODAL NUEVA PLANTILLA
 // =====================
 function initializeNuevaPlantillaModal() {
-    const modal = document.getElementById('nuevaPlantillaModal');
-    const closeBtn = document.getElementById('closeNuevaPlantilla');
+    const modal     = document.getElementById('nuevaPlantillaModal');
+    const closeBtn  = document.getElementById('closeNuevaPlantilla');
     const cancelBtn = document.getElementById('btnCancelarPlantilla');
-    const form = document.getElementById('formNuevaPlantilla');
+    const form      = document.getElementById('formNuevaPlantilla');
 
-    if (closeBtn) closeBtn.addEventListener('click', cerrarModalNuevaPlantilla);
+    if (closeBtn)  closeBtn.addEventListener('click', cerrarModalNuevaPlantilla);
     if (cancelBtn) cancelBtn.addEventListener('click', cerrarModalNuevaPlantilla);
 
     window.addEventListener('click', function(event) {
@@ -284,15 +279,15 @@ function cerrarModalNuevaPlantilla() {
 }
 
 function crearNuevaPlantilla() {
-    const marca = document.getElementById('marcaNueva').value;
+    const marca          = document.getElementById('marcaNueva').value;
     const nombreCapitulo = document.getElementById('nombreCapitulo').value;
     const nombrePlantilla = document.getElementById('nombrePlantilla').value;
 
     const nuevaPlantilla = {
-        id: plantillasData.length + 1,
-        marca: marca,
-        proceso: nombrePlantilla,
-        categoria: nombreCapitulo,
+        id:           plantillasData.length + 1,
+        marca:        marca,
+        proceso:      nombrePlantilla,
+        categoria:    nombreCapitulo,
         numPreguntas: 0
     };
 
@@ -308,11 +303,11 @@ function crearNuevaPlantilla() {
 // MODAL ACCIÓN COMPLETADA
 // ========================
 function initializeAccionCompletadaModal() {
-    const closeBtn = document.getElementById('closeAccionCompletada');
+    const closeBtn  = document.getElementById('closeAccionCompletada');
     const cerrarBtn = document.getElementById('btnCerrarAccion');
-    const modal = document.getElementById('accionCompletadaModal');
+    const modal     = document.getElementById('accionCompletadaModal');
 
-    if (closeBtn) closeBtn.addEventListener('click', cerrarModalAccionCompletada);
+    if (closeBtn)  closeBtn.addEventListener('click', cerrarModalAccionCompletada);
     if (cerrarBtn) cerrarBtn.addEventListener('click', cerrarModalAccionCompletada);
 
     window.addEventListener('click', function(event) {
@@ -344,11 +339,11 @@ function cerrarModalAccionCompletada() {
 // MODAL DE PERFIL
 // ===================
 function initializeProfileModal() {
-    const modal = document.getElementById('profileModal');
-    const userIcon = document.querySelector('.user-icon');
-    const btnEditProfile = document.getElementById('btnEditProfile');
+    const modal             = document.getElementById('profileModal');
+    const userIcon          = document.querySelector('.user-icon');
+    const btnEditProfile    = document.getElementById('btnEditProfile');
     const btnChangePassword = document.getElementById('btnChangePassword');
-    const btnLogout = document.getElementById('btnLogout');
+    const btnLogout         = document.getElementById('btnLogout');
 
     if (userIcon) {
         userIcon.addEventListener('click', function() {
@@ -356,8 +351,6 @@ function initializeProfileModal() {
             document.body.style.overflow = 'hidden';
         });
     }
-
-    // La X del modal de perfil se maneja inline en el HTML
 
     window.addEventListener('click', function(event) {
         if (event.target === modal) {
@@ -375,7 +368,7 @@ function initializeProfileModal() {
 
     if (btnEditProfile) {
         btnEditProfile.addEventListener('click', function() {
-            const inputs = document.querySelectorAll('.info-group input');
+            const inputs    = document.querySelectorAll('.info-group input');
             const isEditing = this.textContent === 'Guardar Cambios';
 
             if (isEditing) {
@@ -434,15 +427,19 @@ function showNotification(message) {
         color: white;
         padding: 15px 25px;
         border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         z-index: 10000;
         font-weight: 600;
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
         animation: slideInRight 0.3s ease;
     `;
     document.body.appendChild(notification);
     setTimeout(() => {
         notification.style.animation = 'slideOutRight 0.3s ease';
-        setTimeout(() => document.body.removeChild(notification), 300);
+        setTimeout(() => {
+            if (document.body.contains(notification)) document.body.removeChild(notification);
+        }, 300);
     }, 3000);
 }
 

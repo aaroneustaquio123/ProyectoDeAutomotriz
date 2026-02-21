@@ -412,6 +412,9 @@ nav a.active::after {
     background-color: white;
     transition: border-color 0.3s ease;
     appearance: auto;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
 .form-control:focus {
